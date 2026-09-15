@@ -2,12 +2,13 @@
 """Pull a health baseline from the Oura API v2 and print a summary.
 
 Usage:
-    export OURA_PAT="<personal access token from https://cloud.ouraring.com/personal-access-tokens>"
+    python3 oura/oauth.py authorize-url   # then open the link, authorize, and
+    python3 oura/oauth.py exchange "<redirect URL>"
     python3 oura/fetch_baseline.py [--days 90]
 
-A Personal Access Token (PAT) is required. An OAuth app client_id/client_secret
-pair does NOT work against /v2/usercollection/* endpoints; those need a user token
-obtained through the authorization-code flow or a PAT.
+The access token is read from OURA_ACCESS_TOKEN, else from oura/data/tokens.json
+written by oura/oauth.py. An OAuth app client_id/client_secret pair on its own does
+NOT work against /v2/usercollection/* endpoints; a user access token is required.
 
 Raw responses are written to oura/data/<endpoint>.json (git-ignored).
 """
@@ -68,9 +69,13 @@ def main():
     ap.add_argument("--days", type=int, default=90)
     args = ap.parse_args()
 
-    token = os.environ.get("OURA_PAT")
+    token = os.environ.get("OURA_ACCESS_TOKEN")
+    tokens_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tokens.json")
+    if not token and os.path.exists(tokens_file):
+        with open(tokens_file) as fh:
+            token = json.load(fh).get("access_token")
     if not token:
-        sys.exit("Set OURA_PAT to an Oura personal access token.")
+        sys.exit("No access token. Run oura/oauth.py first or set OURA_ACCESS_TOKEN.")
 
     end = date.today()
     start = end - timedelta(days=args.days)

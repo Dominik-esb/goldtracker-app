@@ -6,15 +6,14 @@
 
 ## 1. Health baseline from Oura
 
-The Oura data pull has not happened yet. The credentials supplied are an OAuth **client ID and client secret** for an Oura app. They authenticate the webhook-management endpoints (verified: `GET /v2/webhook/subscription` returns 200) but every `/v2/usercollection/*` endpoint returns 401 with them. Oura only issues user data tokens through the browser authorization-code flow or a **Personal Access Token**.
+The Oura data pull has not happened yet. The credentials supplied are an OAuth **client ID and client secret** for an Oura app. They authenticate the webhook-management endpoints (verified: `GET /v2/webhook/subscription` returns 200) but every `/v2/usercollection/*` endpoint returns 401 with them. Oura only issues user data tokens through the browser OAuth2 authorization-code flow (Personal Access Tokens are deprecated).
 
 To get the baseline:
 
-1. Create a token at https://cloud.ouraring.com/personal-access-tokens
-2. Run:
-
 ```bash
-export OURA_PAT="<token>"
+export OURA_CLIENT_ID="<client id>" OURA_CLIENT_SECRET="<client secret>"
+python3 oura/oauth.py authorize-url        # open the printed link, log in, authorize
+python3 oura/oauth.py exchange "<the URL you were redirected to>"
 python3 oura/fetch_baseline.py --days 90
 ```
 
