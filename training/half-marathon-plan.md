@@ -92,14 +92,18 @@ Every fourth week is a down week (roughly 70 % volume). Volume never rises more 
 | Day | Session |
 |---|---|
 | Mon | Rest or 30 min easy cycling (you already do this) |
-| Tue | Key session 1 (intervals, hills or tempo) with 15 min warm-up and cool-down |
-| Wed | Easy run Z2, 40 to 60 min, then strength A |
+| Tue | Key session 1 (intervals, hills or tempo) with 15 min warm-up and cool-down, then strength A (same day, hard days hard) |
+| Wed | Easy run Z2, 40 to 60 min |
 | Thu | Easy run Z2 with 6x20 s strides, or key session 2 in Phases 3 and 4 |
 | Fri | Rest, then strength B |
 | Sat | Easy run Z2, 30 to 45 min (the fifth run, drop it first when readiness is low) |
 | Sun | Long run |
 
-**Strength A and B**, 25 min each, from week 1: single-leg squats, Romanian deadlifts, calf raises (straight and bent knee, to fatigue), glute bridges, side-lying hip abduction, planks and side planks. Add load over time. Your Oura strength sessions in June averaged 110 to 140 bpm, which is the right intensity.
+**Strength A and B**, 30 min each, from week 1. Evidence favours heavy, low-rep strength work and later light plyometrics over bodyweight circuits for running economy (2 to 4 % gains); injury-prevention evidence is mixed but calf and hip strength are consistently weak in injured runners.
+
+- **A (Tue, after the run):** goblet or barbell squat, Romanian deadlift, Bulgarian split squat, straight-knee calf raise with 3 s lowering, plank and dead bug. Weeks 1 to 4 bodyweight or light, 3x10. Weeks 5 to 10, 3x8 adding load. From week 11, 4x5 heavy (2 reps in reserve) on squat and deadlift.
+- **B (Fri):** single-leg squat to a bench, single-leg hip thrust, banded side steps, bent-knee (soleus) calf raise loaded, Nordic hamstring curl from week 5, side plank and Pallof press. 3x8 to 3x15. From Phase 3 add 2x10 pogo hops and 2x5 low box jumps at the end if pain-free.
+- Deload on running down weeks (2 sets each). No strength in race week, only B light in taper weeks 47 and 48. Never a heavy session the day before the long run.
 
 **Sleep rules for the build:** bedtime by 00:30 on Mon, Wed and Sat nights (before key sessions and long run); 7.5 h target; keep wake time within a 90 min window. Track the Oura sleep regularity contributor; the plan expects it above 80 by December.
 
@@ -196,6 +200,13 @@ Oura milestones: sleep regularity contributor above 80 by December; average slee
 - Pacing: first 5 km at goal pace plus 5 s/km, middle 10 km at goal pace, last 6 km whatever is left. Positive splits of more than 2 min mean you went out too fast.
 - Fuel: one gel at 45 min and one at 75 min, water at every station in warm weather.
 
-## 9. Refreshing the data
+## 9. Plan checks against published guidance
+
+- Weekly volume never rises more than 10 % outside step-backs; every fourth week is a down week; roughly 80 % of running is easy. All three match current guidance.
+- A cohort study of recreational half marathoners found that over 32 km per week and long runs over 21 km were associated with faster finishes (about 4 min) with no increase in injury rate. The plan peaks at 60 km with a 24 km long run.
+- Long runs are 40 % of weekly volume in Phase 1, above the usual 20 to 30 %. That is the accepted beginner exception: weekly volume is too low to keep the long run in range. From Phase 2 it sits at 35 to 40 %.
+- The taper is effectively two weeks (week 48 at 50 %, week 49 at 30 % of peak); week 47 is a normal cut-back week with quality kept in. Three-week tapers are not recommended for runners at this level.
+
+## 10. Refreshing the data
 
 Tokens last 30 days and refresh with `python3 oura/oauth.py refresh`. Re-run the baseline pull every 3 months and after each 5 km test, and update sections 1, 2, 3 and 5. If the VO2max endpoint becomes available, map it to the tiers: roughly 5K 33:00 ≈ 32, 27:30 ≈ 38, 25:15 ≈ 41.
