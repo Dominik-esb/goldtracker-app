@@ -251,6 +251,55 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background
   </ul>
 </section>
 
+<section id="nutrition">
+  <h2>9. Nutrition</h2>
+  <p>Oura puts your expenditure at about 3,100 to 3,200 kcal a day over the last 90 days (BMR 1,900, about 750 active kcal). Running adds roughly 60 kcal per km at 89 kg. Strategy: a small deficit while volume is low, maintenance once the hard blocks start. Weight comes off through the deficit and the mileage together, never by cutting carbs on training days.</p>
+  <div class="tblwrap"><table>
+    <tr><th>Phase</th><th class="num">Expenditure</th><th class="num">Rest / easy day</th><th class="num">Key or long-run day</th><th>Weight aim</th></tr>
+    <tr><td><span class="chip p1">1 Base I</span></td><td class="num">3,100</td><td class="num">2,800</td><td class="num">3,100</td><td>89 → 86 kg by December</td></tr>
+    <tr><td><span class="chip p2">2 Base II</span></td><td class="num">3,300</td><td class="num">3,000</td><td class="num">3,300</td><td>86 → 84 kg by March</td></tr>
+    <tr><td><span class="chip p3">3 Strength / 10K</span></td><td class="num">3,500</td><td class="num">3,300</td><td class="num">3,600</td><td>84 → 82 kg by May, then hold</td></tr>
+    <tr><td><span class="chip p4">4 HM specific</span> <span class="chip p5">5 Taper</span></td><td class="num">3,600 – 3,700</td><td class="num">3,500</td><td class="num">3,800</td><td>Hold. No deficit in the last 12 weeks</td></tr>
+  </table></div>
+  <div class="grid2" style="margin-top:24px">
+    <div>
+      <h3>Macros per day</h3>
+      <div class="tblwrap"><table>
+        <tr><th></th><th class="num">Rest / easy</th><th class="num">Key session</th><th class="num">Long run &gt; 90 min</th></tr>
+        <tr><td>Protein</td><td class="num">160 g</td><td class="num">160 g</td><td class="num">160 g</td></tr>
+        <tr><td>Carbohydrate</td><td class="num">350 g</td><td class="num">450 g</td><td class="num">530 g</td></tr>
+        <tr><td>Fat</td><td class="num">85 g</td><td class="num">85 g</td><td class="num">85 g</td></tr>
+      </table></div>
+      <p class="note" style="margin-top:8px">1.8 g/kg protein in four 40 g meals; 4, 5 and 6 g/kg carbs; 1 g/kg fat. Race week 8 to 10 g/kg carbs from Thursday. Scale down as weight drops.</p>
+      <h3 style="margin-top:16px">Around runs</h3>
+      <ul>
+        <li>Easy run: 40 to 60 g carbs 60 to 90 min before. Morning runs under 60 min: coffee and a banana is enough.</li>
+        <li>Key session or long run: full meal 2.5 to 3 h before, 100 to 150 g carbs, low fat and fibre.</li>
+        <li>Runs over 75 min (Phase 2 on): 30 to 60 g carbs per hour from minute 30. Rehearse gels on every Phase 3 and 4 long run.</li>
+        <li>Within 60 min after key or long runs: 30 to 40 g protein plus 60 to 80 g carbs.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Sample key-session day, about 3,100 kcal</h3>
+      <div class="tblwrap"><table>
+        <tr><td>Breakfast</td><td>100 g oats, 300 ml milk, banana, 200 g Quark or 30 g whey, honey</td></tr>
+        <tr><td>Lunch</td><td>150 g rice (dry), 180 g chicken or 250 g tofu, vegetables, olive oil</td></tr>
+        <tr><td>Pre-run</td><td>2 slices toast with jam, or banana and a bar, 90 min before</td></tr>
+        <tr><td>Post-run</td><td>500 ml milk, 60 g oats, banana</td></tr>
+        <tr><td>Dinner</td><td>300 g potatoes, 150 g fish or lean beef, salad, 200 g yoghurt with fruit</td></tr>
+      </table></div>
+      <p class="note" style="margin-top:8px">Rest day: drop pre- and post-run items and halve the rice.</p>
+      <h3 style="margin-top:16px">Fluids, micronutrients, sleep</h3>
+      <ul>
+        <li>About 3 l a day plus 500 ml per running hour; 500 to 1,000 mg sodium per hour on summer long runs.</li>
+        <li>Vitamin D 1,000 to 2,000 IU daily October to March. 1,000 mg calcium from food. Blood test for ferritin, vitamin D and full count in November and May.</li>
+        <li>Caffeine cut-off 14:00, last big meal 3 h before bed, alcohol at most one or two drinks a week and never before a key day. Oura's HRV and sleep score will show each of these.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">Deficit rules: weigh weekly (three-morning average). If readiness or HRV trends down for two weeks, sleep worsens, or a key session fails twice, eat at maintenance for two weeks. Below 82 kg the deficit stops for good.</div>
+</section>
+
 <footer>Data refresh: <code>python3 oura/oauth.py refresh</code> then <code>python3 oura/fetch_baseline.py --days 90</code> every 3 months and after each 5 km test. VO2max, cardiovascular age and resilience were not available with the current token scopes.</footer>
 </div>
 <script>

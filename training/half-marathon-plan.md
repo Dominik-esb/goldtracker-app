@@ -207,6 +207,59 @@ Oura milestones: sleep regularity contributor above 80 by December; average slee
 - Long runs are 40 % of weekly volume in Phase 1, above the usual 20 to 30 %. That is the accepted beginner exception: weekly volume is too low to keep the long run in range. From Phase 2 it sits at 35 to 40 %.
 - The taper is effectively two weeks (week 48 at 50 %, week 49 at 30 % of peak); week 47 is a normal cut-back week with quality kept in. Three-week tapers are not recommended for runners at this level.
 
-## 10. Refreshing the data
+## 10. Nutrition
+
+Oura estimates your expenditure at about 3,100 to 3,200 kcal per day over the last 90 days (BMR 1,900 by Mifflin-St Jeor, 750 active kcal). Running adds roughly 60 kcal per km at 89 kg, so expenditure rises with the plan.
+
+**Strategy:** a small deficit while volume is low, maintenance once the hard blocks start. Weight loss comes from the deficit and the mileage together; never from cutting carbs on training days.
+
+| Phase | Expenditure est. | Rest / easy days | Key session or long-run days | Weight aim |
+|---|---|---|---|---|
+| 1 Base I (Sep to Nov) | 3,100 | 2,800 kcal | 3,100 kcal | 89 to 86 kg by December |
+| 2 Base II (Dec to Feb) | 3,300 | 3,000 kcal | 3,300 kcal | 86 to 84 kg by March |
+| 3 Strength / 10K (Mar to May) | 3,500 | 3,300 kcal | 3,600 kcal | 84 to 82 kg by May, then hold |
+| 4 HM specific and taper (May to Aug) | 3,600 to 3,700 | 3,500 kcal | 3,800 kcal | Hold. No deficit in the last 12 weeks |
+
+**Macros (per day, adjust as body weight drops)**
+
+| | Rest / easy day | Key session day | Long run over 90 min (from week 20) | Race week |
+|---|---|---|---|---|
+| Protein | 160 g (1.8 g/kg), 4 meals of 40 g | 160 g | 160 g | 160 g |
+| Carbohydrate | 350 g (4 g/kg) | 450 g (5 g/kg) | 530 g (6 g/kg) | 700 to 850 g (8 to 10 g/kg) from Thursday |
+| Fat | 85 g (1 g/kg) | 85 g | 85 g | 70 g |
+
+**Around runs**
+
+- Easy run: 40 to 60 g carbs 60 to 90 min before (banana and toast, or oats). Morning easy runs under 60 min can be done on coffee and a banana.
+- Key session or long run: full meal 2.5 to 3 h before with 100 to 150 g carbs, low fat and fibre.
+- Runs over 75 min (Phase 2 onward): 30 to 60 g carbs per hour, starting at 30 min. Practise gels, dates or sports drink on every long run from Phase 3 so race-day fuelling is rehearsed.
+- Within 60 min after a key session or long run: 30 to 40 g protein plus 60 to 80 g carbs (500 ml milk with oats and banana, or Quark with fruit and bread).
+- Strength A or B: a meal with 40 g protein within 2 h.
+
+**Fluids and salt:** about 3 l a day plus 500 ml per hour of running; in summer long runs add 500 to 1,000 mg sodium per hour (electrolyte tabs or salted food).
+
+**Micronutrients:** vitamin D 1,000 to 2,000 IU per day from October to March. Calcium 1,000 mg a day from food (bone stress risk is higher at 89 kg on new mileage). Get ferritin, vitamin D and full blood count checked once in November and once in May; low ferritin is the most common reason a plan like this stalls.
+
+**Sleep and HRV, which Oura will show you**
+
+- Last large meal 3 h before bed; a small carb and protein snack is fine.
+- Caffeine cut-off 14:00. Your median bedtime is 01:20 and late caffeine is the usual cause.
+- Alcohol drops HRV and sleep score for one to two nights; keep it to one or two drinks a week and never the night before a key session or long run.
+
+**Sample day, key-session day (about 3,100 kcal, 160 g protein, 450 g carbs)**
+
+| When | Meal |
+|---|---|
+| Breakfast | 100 g oats with 300 ml milk, banana, 30 g whey or 200 g Quark, honey |
+| Lunch | 150 g rice (dry), 180 g chicken or 250 g tofu, vegetables, olive oil |
+| Pre-run (90 min before) | 2 slices toast with jam, or a banana and a bar |
+| Post-run | 500 ml milk, 60 g oats, banana |
+| Dinner | 300 g potatoes, 150 g fish or lean beef, salad, 200 g yoghurt with fruit |
+
+Rest-day version: drop the pre-run and post-run items and halve the rice.
+
+**Rules for the deficit:** weigh yourself weekly, morning average of three days. If readiness or HRV trends down for two weeks, sleep gets worse, or a key session fails twice, eat at maintenance for two weeks before resuming. Below 82 kg the deficit stops for good; the plan gains nothing from lighter than that.
+
+## 11. Refreshing the data
 
 Tokens last 30 days and refresh with `python3 oura/oauth.py refresh`. Re-run the baseline pull every 3 months and after each 5 km test, and update sections 1, 2, 3 and 5. If the VO2max endpoint becomes available, map it to the tiers: roughly 5K 33:00 ≈ 32, 27:30 ≈ 38, 25:15 ≈ 41.
