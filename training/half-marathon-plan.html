@@ -1,0 +1,288 @@
+<title>Road to 21.1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#f3f5f7;--surface:#ffffff;--ink:#14202b;--muted:#5b6b7a;--rule:#d6dde4;--soft:#e9eef2;
+  --accent:#2a78d6;--accent-ink:#ffffff;--warn:#b7791f;--bad:#c0392b;--good:#1f8a4c;
+  --p1:#2a78d6;--p2:#eb6834;--p3:#1baf7a;--p4:#eda100;--p5:#e87ba4;
+  --disp:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12171c;--surface:#1a2128;--ink:#eef2f5;--muted:#a3b0bb;--rule:#2c3640;--soft:#222c35;
+  --accent:#3987e5;--accent-ink:#ffffff;--warn:#e0a63a;--bad:#e66767;--good:#3fbf74;
+  --p1:#3987e5;--p2:#d95926;--p3:#199e70;--p4:#c98500;--p5:#d55181;}}
+:root[data-theme="dark"]{
+  --bg:#12171c;--surface:#1a2128;--ink:#eef2f5;--muted:#a3b0bb;--rule:#2c3640;--soft:#222c35;
+  --accent:#3987e5;--accent-ink:#ffffff;--warn:#e0a63a;--bad:#e66767;--good:#3fbf74;
+  --p1:#3987e5;--p2:#d95926;--p3:#199e70;--p4:#c98500;--p5:#d55181;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:960px;margin:0 auto}
+h1,h2,h3{font-family:var(--disp);text-wrap:balance;line-height:1.05;margin:0}
+h1{font-size:clamp(44px,8vw,76px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(26px,4vw,34px);font-weight:600;margin-bottom:12px}
+h3{font-size:20px;font-weight:600}
+p{margin:0 0 12px;max-width:68ch}
+.eyebrow{font-family:var(--disp);text-transform:uppercase;letter-spacing:.12em;font-size:13px;font-weight:600;color:var(--muted)}
+header{padding-block:40px 24px;border-bottom:2px solid var(--ink)}
+header .sub{color:var(--muted);font-size:17px;max-width:60ch}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:24px}
+.tile{background:var(--surface);border:1px solid var(--rule);padding:14px 16px;border-radius:6px}
+.tile .n{font-family:var(--disp);font-size:36px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.tile .l{font-size:13px;color:var(--muted);margin-top:4px}
+.tile.goal{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tile.goal .l{color:var(--bg);opacity:.8}
+section{padding-block:36px;border-bottom:1px solid var(--rule)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px 32px}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--disp);text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.callout{background:var(--surface);border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 6px 6px 0;margin:16px 0}
+ol,ul{padding-left:22px;max-width:70ch}li{margin-bottom:8px}
+.chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-family:var(--disp);letter-spacing:.06em;text-transform:uppercase;font-weight:600;white-space:nowrap}
+.chip::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--pc);vertical-align:0}
+.chip{background:var(--soft);color:var(--ink)}
+.p1{--pc:var(--p1)}.p2{--pc:var(--p2)}.p3{--pc:var(--p3)}.p4{--pc:var(--p4)}.p5{--pc:var(--p5)}
+.zone td:first-child{font-family:var(--disp);font-weight:700;font-size:17px}
+.z1{color:var(--good)}.z2{color:var(--accent)}.z4{color:var(--warn)}.z5{color:var(--bad)}
+.light{color:var(--good);font-weight:600}.amber{color:var(--warn);font-weight:600}.red{color:var(--bad);font-weight:600}
+/* chart */
+.chart{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px;margin:16px 0;position:relative}
+.chart svg{width:100%;height:auto;display:block;max-width:100%}
+.chart .t{font-size:12px;fill:var(--muted)}
+.chart .grid{stroke:var(--rule);stroke-width:1}
+.chart .bar{rx:0}
+.chart .bar:hover{opacity:.75}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;padding:6px 10px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .1s}
+.tip.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.tip{transition:none}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;margin-top:8px}
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px}
+.filters button{font:inherit;font-size:14px;background:var(--surface);color:var(--ink);border:1px solid var(--rule);padding:6px 12px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.filters button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+tr.now td{background:var(--soft);font-weight:600}
+tr.now td:first-child::after{content:" now";font-family:var(--disp);color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+tr.past td{color:var(--muted)}
+.wk td.key{min-width:260px}
+.note{font-size:14px;color:var(--muted)}
+footer{padding-top:24px;font-size:14px;color:var(--muted)}
+.nw{white-space:nowrap}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--soft);padding:1px 5px;border-radius:3px}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Half marathon · 14 Sep 2026 → 22 Aug 2027 · 49 weeks</div>
+  <h1>Road to 21.1</h1>
+  <p class="sub">A 49-week build from a 1:10 10 km to a half marathon, calibrated on 90 days of Oura data (17 Jun to 15 Sep 2026) and your own running log. Race date is a placeholder until you pick the event.</p>
+  <div class="tiles">
+    <div class="tile goal"><div class="n">2:10</div><div class="l">Goal · 6:09 /km</div></div>
+    <div class="tile goal"><div class="n">1:59</div><div class="l">Stretch · 5:38 /km</div></div>
+    <div class="tile"><div class="n">2:35</div><div class="l">Equivalent today, from 10 km in 1:10</div></div>
+    <div class="tile"><div class="n">60</div><div class="l">Peak km per week (July)</div></div>
+    <div class="tile"><div class="n">5</div><div class="l">Runs per week from week 17</div></div>
+  </div>
+</header>
+
+<section id="baseline">
+  <h2>1. Where you start</h2>
+  <p>25-year-old male, 180 cm, 89 kg. The ring sees a good engine and a poor night's sleep; your runs it mostly did not see at all.</p>
+  <div class="tiles">
+    <div class="tile"><div class="n">52</div><div class="l">Resting HR, bpm (49 to 61)</div></div>
+    <div class="tile"><div class="n">57</div><div class="l">HRV rMSSD, ms</div></div>
+    <div class="tile"><div class="n">6.9<span style="font-size:20px"> h</span></div><div class="l">Sleep per night · 15 of 85 under 6 h</div></div>
+    <div class="tile"><div class="n">01:20</div><div class="l">Median bedtime · 34 of 85 after 02:00</div></div>
+    <div class="tile"><div class="n">78</div><div class="l">Readiness · 11 of 88 days under 70</div></div>
+    <div class="tile"><div class="n">9,970</div><div class="l">Steps per day</div></div>
+    <div class="tile"><div class="n">178</div><div class="l">Avg HR on your 1:10 10 km</div></div>
+    <div class="tile"><div class="n">3</div><div class="l">Runs Oura logged in 90 days (of 85 workouts)</div></div>
+  </div>
+  <div class="grid2" style="margin-top:24px">
+    <div>
+      <h3>What the 10 km in 1:10 says</h3>
+      <ul>
+        <li>7:00 /km at 178 bpm for 70 minutes. Holding that means your max HR is at least 192; zones use a working max of <strong>195</strong>.</li>
+        <li>That was about 91 % of max, a race effort. Equivalents today: 5 km ≈ 33:00, half ≈ 2:35.</li>
+        <li>Engine (resting HR 52, HRV 57) is well ahead of running economy. Economy responds to volume and easy running, not intensity.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What it changes in the plan</h3>
+      <ul>
+        <li><strong>No run-walk phase.</strong> Week 1 starts at 20 km over 3 runs. Four runs from week 7, five from week 17.</li>
+        <li><strong>Easy means under 156 bpm.</strong> Expect 7:30 to 8:00 /km and walking hills for about six weeks. This is the biggest change.</li>
+        <li><strong>Sleep is the limiter.</strong> Oura's two lowest readiness inputs are sleep balance (66) and sleep regularity (69). Target 7.5 h, bed by 00:30 before key days.</li>
+        <li><strong>Strength twice a week from week 1.</strong> It was regular in June (7 sessions) and faded (5 since). Main injury insurance at 89 kg.</li>
+        <li><strong>Log runs in Oura</strong> with the ring on. Without them the readiness rule has no load to react to.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="zones">
+  <h2>2. Heart-rate zones and paces</h2>
+  <p>Working max 195 bpm. If the week-2 test peaks above 192, set max to that peak plus 3 and recompute.</p>
+  <div class="grid2">
+    <div class="tblwrap"><table class="zone">
+      <tr><th>Zone</th><th>Name</th><th class="num">bpm</th><th>Feel</th><th>Used for</th></tr>
+      <tr><td class="z1">Z1</td><td>Recovery</td><td class="num">&lt; 137</td><td>Could sing</td><td>Day after hard sessions</td></tr>
+      <tr><td class="z2">Z2</td><td>Easy</td><td class="num">137 – 156</td><td>Full sentences</td><td>75 to 80 % of all running</td></tr>
+      <tr><td>Z3</td><td>Steady</td><td class="num">156 – 170</td><td>Short sentences</td><td>Base II steady runs</td></tr>
+      <tr><td class="z4">Z4</td><td>Tempo / HM to 10K</td><td class="num">170 – 179</td><td>A few words</td><td>Tempo and HM-pace work</td></tr>
+      <tr><td class="z5">Z5</td><td>Interval / 5K</td><td class="num">&gt; 179</td><td>No talking</td><td>1000 m repeats, hill reps</td></tr>
+    </table></div>
+    <div class="tblwrap"><table>
+      <tr><th>Pace</th><th class="num">Now</th><th>For</th></tr>
+      <tr><td>Easy (Z2)</td><td class="num">7:30 – 8:00</td><td>All easy runs and long runs</td></tr>
+      <tr><td>Steady (Z3)</td><td class="num">6:50</td><td>Base II steady blocks</td></tr>
+      <tr><td>Tempo</td><td class="num">6:35</td><td>Tempo runs</td></tr>
+      <tr><td>10K pace</td><td class="num">7:00 → 6:20 by April</td><td>Longer intervals</td></tr>
+      <tr><td>5K pace</td><td class="num">6:35</td><td>1000 m repeats</td></tr>
+      <tr><td>Goal HM pace</td><td class="num">6:09 (stretch 5:38)</td><td>Phase 4 long runs and HM-pace blocks</td></tr>
+    </table></div>
+  </div>
+  <div class="callout">Your 1:10 10 km at 178 bpm was a Z4 effort for 70 minutes. In this plan that intensity appears once a week at most, in the key session, and never for longer than 35 minutes until Phase 4.</div>
+</section>
+
+<section id="goal">
+  <h2>3. What a good time means for you</h2>
+  <div class="tblwrap"><table>
+    <tr><th>Tier</th><th class="num">Half</th><th class="num">Pace /km</th><th class="num">Needs 10 km of</th><th class="num">Needs 5 km of</th></tr>
+    <tr><td>Today</td><td class="num">2:35</td><td class="num">7:20</td><td class="num">1:10:00</td><td class="num">33:00</td></tr>
+    <tr><td><strong>Goal</strong></td><td class="num"><strong>2:10</strong></td><td class="num">6:09</td><td class="num">58:30</td><td class="num">27:30</td></tr>
+    <tr><td><strong>Stretch</strong></td><td class="num"><strong>1:59</strong></td><td class="num">5:38</td><td class="num">53:30</td><td class="num">25:15</td></tr>
+  </table></div>
+  <p style="margin-top:12px">Decide at the week-30 10 km race on 11 Apr 2027: <strong>under 55:00</strong> means the last 12 weeks train at 1:59 pace, otherwise at 2:10 pace. Sub-2:10 is a respectable first half; sub-2:00 puts you in the top half of finishers at a typical city half.</p>
+</section>
+
+<section id="phases">
+  <h2>4. Phases and weekly volume</h2>
+  <div class="chart" id="chart"><div class="tip" id="tip"></div></div>
+  <div class="tblwrap"><table>
+    <tr><th>Phase</th><th class="nw">Weeks</th><th>Dates</th><th class="num">Runs/wk</th><th class="num">Peak km</th><th>Purpose</th></tr>
+    <tr><td><span class="chip p1">1 Base I</span></td><td class="nw">1 – 10</td><td>14 Sep – 22 Nov 2026</td><td class="num">3 – 4</td><td class="num">30</td><td>Slow the easy runs down, strides, strength habit, 5 km test</td></tr>
+    <tr><td><span class="chip p2">2 Base II</span></td><td class="nw">11 – 22</td><td>23 Nov – 14 Feb</td><td class="num">4 – 5</td><td class="num">42</td><td>Winter volume, hills, first tempo runs</td></tr>
+    <tr><td><span class="chip p3">3 Strength / 10K</span></td><td class="nw">23 – 34</td><td>15 Feb – 9 May</td><td class="num">5</td><td class="num">50</td><td>VO2max intervals, 10 km race in week 30</td></tr>
+    <tr><td><span class="chip p4">4 HM specific</span></td><td class="nw">35 – 46</td><td>10 May – 1 Aug</td><td class="num">5</td><td class="num">60</td><td>Long runs with HM pace, threshold</td></tr>
+    <tr><td><span class="chip p5">5 Taper</span></td><td class="nw">47 – 49</td><td>2 Aug – 22 Aug 2027</td><td class="num">5 → 3</td><td class="num">42 → 18</td><td>Freshen up, race</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:10px">Every fourth week is a down week at roughly 70 % volume. Volume never rises more than about 10 % week to week outside step-backs.</p>
+  <div class="grid2" style="margin-top:24px">
+    <div>
+      <h3>Weekly template, Phase 2 onward</h3>
+      <div class="tblwrap"><table>
+        <tr><td>Mon</td><td>Rest or 30 min easy cycling</td></tr>
+        <tr><td>Tue</td><td>Key session 1, 15 min warm-up and cool-down</td></tr>
+        <tr><td>Wed</td><td>Easy Z2, 40 to 60 min, then strength A</td></tr>
+        <tr><td>Thu</td><td>Easy Z2 with 6×20 s strides; key session 2 in Phases 3 and 4</td></tr>
+        <tr><td>Fri</td><td>Rest, then strength B</td></tr>
+        <tr><td>Sat</td><td>Easy Z2, 30 to 45 min. The fifth run, first to drop when readiness is low</td></tr>
+        <tr><td>Sun</td><td>Long run</td></tr>
+      </table></div>
+    </div>
+    <div>
+      <h3>Strength A and B, 25 min each</h3>
+      <p>Single-leg squats, Romanian deadlifts, calf raises straight and bent knee to fatigue, glute bridges, side-lying hip abduction, planks and side planks. Add load over time. Your June sessions averaged 110 to 140 bpm, which is right.</p>
+      <h3 style="margin-top:16px">Sleep rules</h3>
+      <p>Bed by 00:30 on Mon, Wed and Sat nights. 7.5 h target. Wake time inside a 90 min window. Oura sleep regularity above 80 by December.</p>
+    </div>
+  </div>
+</section>
+
+<section id="readiness">
+  <h2>5. Daily rule from Oura</h2>
+  <p>Thresholds come from your 90-day baseline: readiness 78, HRV 57 ms, resting HR 52. Check before every key session and long run.</p>
+  <div class="tblwrap"><table>
+    <tr><th>Signal</th><th>Action</th></tr>
+    <tr><td><span class="light">Green</span> · readiness ≥ 85 and HRV ≥ 55 ms</td><td>Run the session as planned</td></tr>
+    <tr><td><span class="amber">Amber</span> · readiness 70 – 84</td><td>Run it, but cap intervals at 80 % of reps or shorten the long run by 20 %</td></tr>
+    <tr><td><span class="red">Red</span> · readiness &lt; 70, or HRV &lt; 45 ms, or resting HR ≥ 57</td><td>Swap the key session for 30 to 40 min Z1/Z2 or rest. Move the key session at most one day. (10 Sep 2026 was one: RHR 61, HRV 35.)</td></tr>
+    <tr><td>Temperature deviation &gt; +0.5 °C two mornings running</td><td>Rest until it normalises</td></tr>
+    <tr><td>Sleep under 6 h before a key session</td><td>Downgrade to amber</td></tr>
+    <tr><td>Two red days in a row</td><td>Rest of the week easy, count it as the down week</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:10px">Weekly: if 7-day readiness falls three weeks running while volume rises, hold volume flat for two weeks. Refresh the baseline every 3 months; resting HR should drift toward the mid-40s and HRV up.</p>
+</section>
+
+<section id="weeks">
+  <h2>6. Week by week</h2>
+  <p>Long run on Sunday, key session on Tuesday (and Thursday where two are listed). Everything else is Z2 under 156 bpm. The current week is marked.</p>
+  <div class="filters" id="filters" role="group" aria-label="Filter by phase">
+    <button type="button" id="f-all" data-p="0" aria-pressed="true">All 49 weeks</button>
+    <button type="button" id="f-1" data-p="1">1 Base I</button>
+    <button type="button" id="f-2" data-p="2">2 Base II</button>
+    <button type="button" id="f-3" data-p="3">3 Strength / 10K</button>
+    <button type="button" id="f-4" data-p="4">4 HM specific</button>
+    <button type="button" id="f-5" data-p="5">5 Taper</button>
+  </div>
+  <div class="tblwrap"><table class="wk" id="wk">
+    <thead><tr><th class="num">Wk</th><th>Mon</th><th>Phase</th><th class="num">Runs</th><th class="num">km</th><th class="num">Long</th><th>Key session</th></tr></thead>
+    <tbody id="wkbody"></tbody>
+  </table></div>
+</section>
+
+<section id="milestones">
+  <h2>7. Milestones</h2>
+  <div class="tblwrap"><table>
+    <tr><th>When</th><th>Check</th></tr>
+    <tr><td>Wk 2 · 26 Sep 2026</td><td>5 km time trial. Confirms paces and max HR. Expect 31 to 34 min</td></tr>
+    <tr><td>Wk 10 · 21 Nov 2026</td><td>5 km re-test, expect 29 to 30 min</td></tr>
+    <tr><td>Wk 22 · 13 Feb 2027</td><td>5 km re-test, expect 27 to 28 min</td></tr>
+    <tr><td>Wk 30 · 11 Apr 2027</td><td>10 km race. Under 55:00 unlocks the 1:59 build. 10 km time × 2.2 predicts the half</td></tr>
+    <tr><td>Wk 40 · 13 Jun 2027</td><td>22 km long run with 8 km at HM pace, comfortably</td></tr>
+    <tr><td>Wk 46 · 25 Jul 2027</td><td>Peak long run: 14 km at HM pace inside 24 km</td></tr>
+    <tr><td>Wk 49 · 22 Aug 2027</td><td>Race</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:10px">Oura milestones: sleep regularity above 80 by December; sleep 7.3 h or more by March; resting HR under 48 by June; easy runs under 156 bpm at 7:00 /km by February.</p>
+</section>
+
+<section id="race">
+  <h2>8. Race week</h2>
+  <ul>
+    <li>Carbohydrate load from Thursday: 8 to 10 g per kg body weight per day, low fibre on Saturday.</li>
+    <li>Race morning: breakfast 3 h before, 60 to 90 g carbs, caffeine 60 min before if you are used to it.</li>
+    <li>Pacing: first 5 km at goal pace plus 5 s/km, middle 10 km at goal pace, last 6 km whatever is left. A positive split over 2 min means you went out too fast.</li>
+    <li>Fuel: one gel at 45 min and one at 75 min, water at every station in warm weather.</li>
+  </ul>
+</section>
+
+<footer>Data refresh: <code>python3 oura/oauth.py refresh</code> then <code>python3 oura/fetch_baseline.py --days 90</code> every 3 months and after each 5 km test. VO2max, cardiovascular age and resilience were not available with the current token scopes.</footer>
+</div>
+<script>
+(function(){
+var PLAN=[{"w":1,"mon":"14 Sep 2026","phase":1,"runs":3,"km":20,"lr":8,"key":"Easy Z2 only, get used to running under 156 bpm"},{"w":2,"mon":"21 Sep 2026","phase":1,"runs":3,"km":22,"lr":8,"key":"5 km time trial (Sat), sets paces"},{"w":3,"mon":"28 Sep 2026","phase":1,"runs":3,"km":22,"lr":9,"key":"4x20 s strides after one easy run"},{"w":4,"mon":"05 Oct 2026","phase":1,"runs":3,"km":24,"lr":10,"key":"6x20 s strides"},{"w":5,"mon":"12 Oct 2026","phase":1,"runs":3,"km":26,"lr":11,"key":"6x20 s strides"},{"w":6,"mon":"19 Oct 2026","phase":1,"runs":3,"km":18,"lr":8,"key":"Down week, easy only"},{"w":7,"mon":"26 Oct 2026","phase":1,"runs":4,"km":26,"lr":11,"key":"8x100 m hill strides"},{"w":8,"mon":"02 Nov 2026","phase":1,"runs":4,"km":28,"lr":12,"key":"3x5 min steady (Z3)"},{"w":9,"mon":"09 Nov 2026","phase":1,"runs":4,"km":30,"lr":13,"key":"4x5 min steady"},{"w":10,"mon":"16 Nov 2026","phase":1,"runs":4,"km":22,"lr":9,"key":"Down week + 5 km re-test (Sat)"},{"w":11,"mon":"23 Nov 2026","phase":2,"runs":4,"km":30,"lr":13,"key":"5x5 min steady"},{"w":12,"mon":"30 Nov 2026","phase":2,"runs":4,"km":32,"lr":14,"key":"20 min continuous steady"},{"w":13,"mon":"07 Dec 2026","phase":2,"runs":4,"km":34,"lr":15,"key":"6x800 m hills"},{"w":14,"mon":"14 Dec 2026","phase":2,"runs":4,"km":24,"lr":10,"key":"Down week, holidays flexible"},{"w":15,"mon":"21 Dec 2026","phase":2,"runs":5,"km":34,"lr":15,"key":"20 min tempo (Z3/4)"},{"w":16,"mon":"28 Dec 2026","phase":2,"runs":5,"km":36,"lr":16,"key":"8x800 m hills"},{"w":17,"mon":"04 Jan 2027","phase":2,"runs":5,"km":38,"lr":16,"key":"25 min tempo"},{"w":18,"mon":"11 Jan 2027","phase":2,"runs":5,"km":26,"lr":11,"key":"Down week"},{"w":19,"mon":"18 Jan 2027","phase":2,"runs":5,"km":38,"lr":16,"key":"2x15 min tempo"},{"w":20,"mon":"25 Jan 2027","phase":2,"runs":5,"km":40,"lr":17,"key":"10x600 m hills"},{"w":21,"mon":"01 Feb 2027","phase":2,"runs":5,"km":42,"lr":18,"key":"30 min tempo"},{"w":22,"mon":"08 Feb 2027","phase":2,"runs":5,"km":28,"lr":12,"key":"Down week + 5 km re-test (Sat)"},{"w":23,"mon":"15 Feb 2027","phase":3,"runs":5,"km":42,"lr":18,"key":"6x1000 m at 5K pace, 2 min jog"},{"w":24,"mon":"22 Feb 2027","phase":3,"runs":5,"km":44,"lr":18,"key":"5x1200 m at 10K pace"},{"w":25,"mon":"01 Mar 2027","phase":3,"runs":5,"km":46,"lr":19,"key":"3x10 min at 10K-HM pace"},{"w":26,"mon":"08 Mar 2027","phase":3,"runs":5,"km":30,"lr":12,"key":"Down week"},{"w":27,"mon":"15 Mar 2027","phase":3,"runs":5,"km":46,"lr":19,"key":"8x1000 m at 5K pace"},{"w":28,"mon":"22 Mar 2027","phase":3,"runs":5,"km":48,"lr":20,"key":"4x2000 m at 10K pace"},{"w":29,"mon":"29 Mar 2027","phase":3,"runs":5,"km":50,"lr":20,"key":"35 min tempo"},{"w":30,"mon":"05 Apr 2027","phase":3,"runs":5,"km":32,"lr":13,"key":"Mini taper then 10 km race (Sat/Sun)"},{"w":31,"mon":"12 Apr 2027","phase":3,"runs":5,"km":40,"lr":16,"key":"Recovery week after race, strides only"},{"w":32,"mon":"19 Apr 2027","phase":3,"runs":5,"km":48,"lr":20,"key":"3x3 km at HM pace"},{"w":33,"mon":"26 Apr 2027","phase":3,"runs":5,"km":50,"lr":21,"key":"5x1600 m at 10K pace"},{"w":34,"mon":"03 May 2027","phase":3,"runs":5,"km":34,"lr":14,"key":"Down week"},{"w":35,"mon":"10 May 2027","phase":4,"runs":5,"km":50,"lr":21,"key":"Long run with last 6 km at HM pace"},{"w":36,"mon":"17 May 2027","phase":4,"runs":5,"km":52,"lr":22,"key":"2x4 km at HM pace"},{"w":37,"mon":"24 May 2027","phase":4,"runs":5,"km":54,"lr":22,"key":"Long run with 3x3 km HM pace"},{"w":38,"mon":"31 May 2027","phase":4,"runs":5,"km":36,"lr":14,"key":"Down week"},{"w":39,"mon":"07 Jun 2027","phase":4,"runs":5,"km":54,"lr":22,"key":"6x1 mile at 10K pace"},{"w":40,"mon":"14 Jun 2027","phase":4,"runs":5,"km":56,"lr":23,"key":"Long run with 8 km at HM pace"},{"w":41,"mon":"21 Jun 2027","phase":4,"runs":5,"km":58,"lr":24,"key":"3x5 km at HM pace"},{"w":42,"mon":"28 Jun 2027","phase":4,"runs":5,"km":38,"lr":15,"key":"Down week"},{"w":43,"mon":"05 Jul 2027","phase":4,"runs":5,"km":56,"lr":23,"key":"Long run with 10 km at HM pace"},{"w":44,"mon":"12 Jul 2027","phase":4,"runs":5,"km":58,"lr":24,"key":"5x2 km at HM pace, 90 s jog"},{"w":45,"mon":"19 Jul 2027","phase":4,"runs":5,"km":60,"lr":24,"key":"Peak week: long run 14 km at HM pace"},{"w":46,"mon":"26 Jul 2027","phase":4,"runs":5,"km":40,"lr":15,"key":"Cut-back week"},{"w":47,"mon":"02 Aug 2027","phase":5,"runs":5,"km":42,"lr":16,"key":"3x2 km at HM pace"},{"w":48,"mon":"09 Aug 2027","phase":5,"runs":4,"km":30,"lr":12,"key":"2x2 km at HM pace, 6x100 m strides"},{"w":49,"mon":"16 Aug 2027","phase":5,"runs":3,"km":18,"lr":0,"key":"RACE WEEK: 2 short easy runs, 4 strides, race Sunday"}];
+var PH=["","1 Base I","2 Base II","3 Strength / 10K","4 HM specific","5 Taper"];
+var start=new Date(2026,8,14), now=new Date();
+var cur=Math.floor((now-start)/(7*864e5))+1;
+// table
+var body=document.getElementById("wkbody"), rows=[];
+PLAN.forEach(function(r){
+  var tr=document.createElement("tr"); tr.dataset.p=r.phase;
+  if(r.w===cur) tr.className="now"; else if(r.w<cur) tr.className="past";
+  tr.innerHTML='<td class="num">'+r.w+'</td><td>'+r.mon+'</td><td><span class="chip p'+r.phase+'">'+PH[r.phase]+'</span></td><td class="num">'+r.runs+'</td><td class="num">'+r.km+'</td><td class="num">'+(r.lr||"–")+'</td><td class="key">'+r.key+'</td>';
+  body.appendChild(tr); rows.push(tr);
+});
+var btns=document.querySelectorAll("#filters button");
+var sel=0; try{sel=+localStorage.getItem("hm-phase")||0;}catch(e){}
+function apply(p){sel=p;rows.forEach(function(tr){tr.hidden=p!==0&&+tr.dataset.p!==p;});btns.forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.p===p));});try{localStorage.setItem("hm-phase",p);}catch(e){}}
+btns.forEach(function(b){b.addEventListener("click",function(){apply(+b.dataset.p);});});
+apply(sel);
+// chart
+var W=960,H=260,L=36,R=8,T=16,B=36,n=PLAN.length,max=70;
+var iw=W-L-R,ih=H-T-B,bw=iw/n;
+var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Weekly running volume in km by week, colored by phase">';
+[0,20,40,60].forEach(function(v){var y=T+ih-(v/max)*ih;s+='<line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'"/><text class="t" x="'+(L-6)+'" y="'+(y+4)+'" text-anchor="end">'+v+'</text>';});
+PLAN.forEach(function(r,i){var h=(r.km/max)*ih,x=L+i*bw+1,y=T+ih-h;s+='<rect class="bar" data-i="'+i+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(bw-2).toFixed(1)+'" height="'+h.toFixed(1)+'" fill="var(--p'+r.phase+')" rx="2"/>';});
+[1,10,20,30,40,49].forEach(function(w){var x=L+(w-.5)*bw;s+='<text class="t" x="'+x+'" y="'+(H-12)+'" text-anchor="middle">wk '+w+'</text>';});
+if(cur>=1&&cur<=n){var cx=L+(cur-.5)*bw;s+='<line x1="'+cx+'" x2="'+cx+'" y1="'+T+'" y2="'+(T+ih)+'" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="3 3"/><text class="t" x="'+cx+'" y="'+(T-4)+'" text-anchor="middle" fill="var(--ink)">now</text>';}
+s+='</svg><div class="legend">'+[1,2,3,4,5].map(function(p){return '<span class="chip p'+p+'">'+PH[p]+'</span>';}).join("")+'</div>';
+var ch=document.getElementById("chart"),tip=document.getElementById("tip");
+ch.insertAdjacentHTML("beforeend",s);
+ch.addEventListener("mousemove",function(e){var t=e.target.closest(".bar");if(!t){tip.className="tip";return;}var r=PLAN[+t.dataset.i],rb=ch.getBoundingClientRect(),tb=t.getBoundingClientRect();tip.textContent="Week "+r.w+" · "+r.mon+" · "+r.km+" km · long "+(r.lr||0)+" km · "+r.runs+" runs";tip.style.left=(tb.left-rb.left+tb.width/2)+"px";tip.style.top=(tb.top-rb.top)+"px";tip.className="tip on";});
+ch.addEventListener("mouseleave",function(){tip.className="tip";});
+})();
+</script>
