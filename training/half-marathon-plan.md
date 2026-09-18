@@ -93,7 +93,7 @@ Every fourth week is a down week (roughly 70 % volume). Volume never rises more 
 |---|---|
 | Mon | Rest or 30 min easy cycling (you already do this) |
 | Tue | Key session 1 (intervals, hills or tempo) with 15 min warm-up and cool-down, then strength A (same day, hard days hard) |
-| Wed | Easy run Z2, 40 to 60 min |
+| Wed | Easy run Z2, 40 to 60 min (from Phase 2), then strength C (upper body) |
 | Thu | Easy run Z2 with 6x20 s strides, or key session 2 in Phases 3 and 4 |
 | Fri | Rest, then strength B |
 | Sat | Easy run Z2, 30 to 45 min (the fifth run, drop it first when readiness is low) |
@@ -103,7 +103,8 @@ Every fourth week is a down week (roughly 70 % volume). Volume never rises more 
 
 - **A (Tue, after the run):** goblet or barbell squat, Romanian deadlift, Bulgarian split squat, straight-knee calf raise with 3 s lowering, plank and dead bug. Weeks 1 to 4 bodyweight or light, 3x10. Weeks 5 to 10, 3x8 adding load. From week 11, 4x5 heavy (2 reps in reserve) on squat and deadlift.
 - **B (Fri):** single-leg squat to a bench, single-leg hip thrust, banded side steps, bent-knee (soleus) calf raise loaded, Nordic hamstring curl from week 5, side plank and Pallof press. 3x8 to 3x15. From Phase 3 add 2x10 pogo hops and 2x5 low box jumps at the end if pain-free.
-- Deload on running down weeks (2 sets each). No strength in race week, only B light in taper weeks 47 and 48. Never a heavy session the day before the long run.
+- **C (Wed, upper body, 45 min):** bench press or dumbbell press 4x6 to 8, pull-ups or lat pulldown 4x6 to 8, overhead press 3x8, barbell or dumbbell row 3x10, dips or push-ups 2 sets near failure, face pulls 3x15, optional arms 2x12. Two reps in reserve on every set, no sets to failure. It keeps your gym habit and posture for late-race form; it does not need to grow. Extra upper-body mass costs about 1 min per kg over a half, so train for strength, not size.
+- Deload on running down weeks (2 sets each). No strength in race week; taper weeks 47 and 48 keep B light and C at 2 sets. Never a heavy lower-body session the day before the long run; C can sit anywhere except race week.
 
 **Sleep rules for the build:** bedtime by 00:30 on Mon, Wed and Sat nights (before key sessions and long run); 7.5 h target; keep wake time within a 90 min window. Track the Oura sleep regularity contributor; the plan expects it above 80 by December.
 
