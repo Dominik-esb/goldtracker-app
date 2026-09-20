@@ -6,7 +6,7 @@
 
 ## 1. Health baseline
 
-Profile: 25-year-old male, 180 cm, 89 kg (BMI 27.5).
+Profile: 25-year-old male, 180 cm, 85 kg (BMI 26.2; Oura's profile says 89 kg and should be corrected in the app so its calorie estimate is right).
 
 | Metric (90-day average) | Value | Read |
 |---|---|---|
@@ -27,14 +27,14 @@ Profile: 25-year-old male, 180 cm, 89 kg (BMI 27.5).
 
 - 7:00 /km at 178 bpm average for 70 minutes. Sustaining 178 for that long means your max heart rate is at least 192; the plan uses a working max of 195.
 - That run was a near-maximal effort, around 91 % of max HR, so 1:10 is a fair current 10 km race time. Equivalent times today: 5 km around 33:00, half marathon around 2:35.
-- Your engine (resting HR 52, HRV 57) is much better than your running economy, which is normal after only a month of running at 89 kg. Economy and the stretch to 21 km are where the big gains come from, and both respond to volume and consistency rather than intensity.
+- Your engine (resting HR 52, HRV 57) is much better than your running economy, which is normal after only a month of running at 85 kg. Economy and the stretch to 21 km are where the big gains come from, and both respond to volume and consistency rather than intensity.
 
 **What this means for the plan**
 
 1. **You can already run 10 km, so there is no run-walk phase.** The plan starts at 20 km a week across 3 runs, roughly what you are doing now, and builds to 4 runs by week 7 and 5 runs by week 17.
 2. **Most of your running is currently too hard.** A "zone 2" run for you means under 156 bpm. If your easy runs sit at 165 to 175 bpm, slow down, walk the hills, and accept 7:30 to 8:00 /km for now. This is the single biggest change and it feels wrong for about six weeks.
 3. **Sleep is the limiter.** 6.9 h with a 01:00 to 03:00 bedtime is where most of the gain is. Target 7.5 h and a bedtime before 00:30 on nights before key sessions. Oura's two lowest readiness inputs are sleep balance and sleep regularity.
-4. **Strength training restarts now, twice a week.** It was regular in June and has faded. It is the main protection against the shin, knee and Achilles issues that end first-year running plans, especially at 89 kg.
+4. **Strength training restarts now, twice a week.** It was regular in June and has faded. It is the main protection against the shin, knee and Achilles issues that end first-year running plans, especially at 85 kg.
 5. **Body weight will trend down on its own** with 30 to 50 km a week. Do not diet during the build; every 1 kg lost at the same fitness is worth roughly 1 min over a half marathon, but under-fuelling costs more in injuries and missed sessions.
 
 ## 2. Testing and pacing
@@ -210,23 +210,23 @@ Oura milestones: sleep regularity contributor above 80 by December; average slee
 
 ## 10. Nutrition
 
-Oura estimates your expenditure at about 3,100 to 3,200 kcal per day over the last 90 days (BMR 1,900 by Mifflin-St Jeor, 750 active kcal). Running adds roughly 60 kcal per km at 89 kg, so expenditure rises with the plan.
+Oura estimates your expenditure at about 3,100 to 3,200 kcal per day over the last 90 days (BMR about 1,860 by Mifflin-St Jeor at 85 kg, 750 active kcal; Oura's figure assumes 89 kg, so real expenditure is closer to 3,000 to 3,100). Running adds roughly 60 kcal per km at 85 kg, so expenditure rises with the plan.
 
 **Strategy:** a small deficit while volume is low, maintenance once the hard blocks start. Weight loss comes from the deficit and the mileage together; never from cutting carbs on training days.
 
 | Phase | Expenditure est. | Rest / easy days | Key session or long-run days | Weight aim |
 |---|---|---|---|---|
-| 1 Base I (Sep to Nov) | 3,100 | 2,800 kcal | 3,100 kcal | 89 to 86 kg by December |
-| 2 Base II (Dec to Feb) | 3,300 | 3,000 kcal | 3,300 kcal | 86 to 84 kg by March |
-| 3 Strength / 10K (Mar to May) | 3,500 | 3,300 kcal | 3,600 kcal | 84 to 82 kg by May, then hold |
-| 4 HM specific and taper (May to Aug) | 3,600 to 3,700 | 3,500 kcal | 3,800 kcal | Hold. No deficit in the last 12 weeks |
+| 1 Base I (Sep to Nov) | 3,050 | 2,750 kcal | 3,050 kcal | 85 to 83 kg by December |
+| 2 Base II (Dec to Feb) | 3,250 | 2,950 kcal | 3,250 kcal | 83 to 81 kg by March |
+| 3 Strength / 10K (Mar to May) | 3,450 | 3,250 kcal | 3,550 kcal | 81 to 80 kg by May, then hold |
+| 4 HM specific and taper (May to Aug) | 3,550 to 3,650 | 3,450 kcal | 3,750 kcal | Hold. No deficit in the last 12 weeks |
 
 **Macros (per day, adjust as body weight drops)**
 
 | | Rest / easy day | Key session day | Long run over 90 min (from week 20) | Race week |
 |---|---|---|---|---|
-| Protein | 160 g (1.8 g/kg), 4 meals of 40 g | 160 g | 160 g | 160 g |
-| Carbohydrate | 350 g (4 g/kg) | 450 g (5 g/kg) | 530 g (6 g/kg) | 700 to 850 g (8 to 10 g/kg) from Thursday |
+| Protein | 155 g (1.8 g/kg), 4 meals of 40 g | 155 g | 155 g | 155 g |
+| Carbohydrate | 340 g (4 g/kg) | 425 g (5 g/kg) | 510 g (6 g/kg) | 680 to 850 g (8 to 10 g/kg) from Thursday |
 | Fat | 85 g (1 g/kg) | 85 g | 85 g | 70 g |
 
 **Around runs**
@@ -239,7 +239,7 @@ Oura estimates your expenditure at about 3,100 to 3,200 kcal per day over the la
 
 **Fluids and salt:** about 3 l a day plus 500 ml per hour of running; in summer long runs add 500 to 1,000 mg sodium per hour (electrolyte tabs or salted food).
 
-**Micronutrients:** vitamin D 1,000 to 2,000 IU per day from October to March. Calcium 1,000 mg a day from food (bone stress risk is higher at 89 kg on new mileage). Get ferritin, vitamin D and full blood count checked once in November and once in May; low ferritin is the most common reason a plan like this stalls.
+**Micronutrients:** vitamin D 1,000 to 2,000 IU per day from October to March. Calcium 1,000 mg a day from food (bone stress risk is higher at 85 kg on new mileage). Get ferritin, vitamin D and full blood count checked once in November and once in May; low ferritin is the most common reason a plan like this stalls.
 
 **Sleep and HRV, which Oura will show you**
 
@@ -247,7 +247,7 @@ Oura estimates your expenditure at about 3,100 to 3,200 kcal per day over the la
 - Caffeine cut-off 14:00. Your median bedtime is 01:20 and late caffeine is the usual cause.
 - Alcohol drops HRV and sleep score for one to two nights; keep it to one or two drinks a week and never the night before a key session or long run.
 
-**Sample day, key-session day (about 3,100 kcal, 160 g protein, 450 g carbs)**
+**Sample day, key-session day (about 3,050 kcal, 155 g protein, 425 g carbs)**
 
 | When | Meal |
 |---|---|
@@ -259,7 +259,7 @@ Oura estimates your expenditure at about 3,100 to 3,200 kcal per day over the la
 
 Rest-day version: drop the pre-run and post-run items and halve the rice.
 
-**Rules for the deficit:** weigh yourself weekly, morning average of three days. If readiness or HRV trends down for two weeks, sleep gets worse, or a key session fails twice, eat at maintenance for two weeks before resuming. Below 82 kg the deficit stops for good; the plan gains nothing from lighter than that.
+**Rules for the deficit:** weigh yourself weekly, morning average of three days. If readiness or HRV trends down for two weeks, sleep gets worse, or a key session fails twice, eat at maintenance for two weeks before resuming. Below 80 kg the deficit stops for good; the plan gains nothing from lighter than that.
 
 ## 11. Refreshing the data
 
