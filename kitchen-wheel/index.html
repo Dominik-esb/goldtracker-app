@@ -30,8 +30,10 @@
   .result .flag { font-size:3rem; line-height:1; }
   .result .name { font-size:1.6rem; font-weight:700; margin:4px 0 10px; }
   .result .desc { margin:0 auto 10px; max-width:46ch; color:var(--muted); }
-  .dishes { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:12px; }
-  .dishes span { border:1px solid var(--line); border-radius:999px; padding:4px 12px; font-size:.9rem; }
+  .dishes { text-align:left; display:grid; gap:8px; margin:0 auto 12px; max-width:46ch; }
+  .dishes li { border:1px solid var(--line); border-radius:10px; padding:8px 12px; display:grid; gap:2px; }
+  .dishes li span { color:var(--muted); font-size:.92rem; }
+  .dishes li a { color:var(--accent); font-size:.88rem; width:fit-content; }
   .list li .n { cursor:pointer; }
   .result .hint { color:var(--muted); }
   button.btn { font:inherit; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:8px 14px; cursor:pointer; }
@@ -104,54 +106,57 @@ const DEFAULTS = [
   ["🇺🇸","US-Amerikanisch (Südstaaten/BBQ)"],["🇦🇺","Australisch"],["🇲🇳","Mongolisch"],["🇺🇿","Usbekisch"]
 ];
 const INFO = {
-  "Italienisch":["Einfache Zutaten, regional sehr verschieden: Pasta und Olivenöl im Süden, Risotto und Butter im Norden.",["Risotto alla Milanese","Pasta alla Norma","Saltimbocca"]],
-  "Französisch":["Butter-Klassiker und rustikale Schmorgerichte; Technik und Saucen stehen im Mittelpunkt.",["Coq au Vin","Ratatouille","Quiche Lorraine"]],
-  "Spanisch":["Tapas, Olivenöl und Meeresfrüchte, je nach Region von Paella bis Pintxos.",["Paella valenciana","Tortilla española","Gambas al ajillo"]],
-  "Griechisch":["Mediterran mit Olivenöl, Oregano, Feta und viel Gegrilltem.",["Moussaka","Souvlaki","Spanakopita"]],
-  "Türkisch":["Osmanisches Erbe: Grillgerichte, Teigtaschen, Joghurt und viele Mezze.",["Manti","Iskender Kebap","Menemen"]],
-  "Deutsch":["Herzhaft und regional: Braten, Kartoffeln, Kohl und Brot.",["Rouladen mit Rotkohl","Käsespätzle","Kartoffelsuppe"]],
-  "Österreichisch":["Habsburgisch geprägt, mit Fleisch, Mehlspeisen und Süßem.",["Wiener Schnitzel","Tafelspitz","Kaiserschmarrn"]],
-  "Ungarisch":["Paprika ist das Herzstück; kräftige Eintöpfe mit Sauerrahm.",["Gulasch","Lángos","Paprikás"]],
-  "Polnisch":["Deftig mit Teigtaschen, Sauerkraut und Roter Bete.",["Pierogi","Bigos","Żurek"]],
-  "Russisch":["Suppen, Teigwaren und Sauerrahm, geprägt von langen Wintern.",["Borschtsch","Pelmeni","Boeuf Stroganoff"]],
-  "Georgisch":["Walnüsse, frische Kräuter, Käse und Brot an der Seidenstraße.",["Khachapuri","Khinkali","Lobio"]],
-  "Portugiesisch":["Viel Fisch, vor allem Stockfisch, dazu Reis und Eintöpfe.",["Bacalhau à Brás","Caldo Verde","Pastéis de Nata"]],
-  "Schwedisch":["Schlicht und saisonal: Fisch, Kartoffeln und Beeren.",["Köttbullar","Gravlax","Raggmunk"]],
-  "Britisch":["Hausmannskost und Pub-Klassiker.",["Fish and Chips","Shepherd's Pie","Sunday Roast"]],
-  "Israelisch":["Frisch und vielfältig, von Straßenküche bis zu orientalischen Salaten.",["Shakshuka","Falafel","Sabich"]],
-  "Libanesisch":["Mezze-Kultur mit Kräutern, Zitrone, Kichererbsen und Grillfleisch.",["Tabbouleh","Hummus","Kibbeh"]],
-  "Persisch":["Duftender Reis mit Safran, Kräutern und süß-sauren Schmorgerichten.",["Ghormeh Sabzi","Tahdig","Joojeh Kabab"]],
-  "Marokkanisch":["Gewürzreiche Tajines und Couscous mit süß-herzhaften Aromen.",["Lamm-Tajine","Couscous mit Gemüse","Harira"]],
-  "Äthiopisch":["Scharfe Eintöpfe (Wot), die man mit Injera-Fladen von Hand isst.",["Doro Wot","Misir Wot","Kitfo"]],
-  "Nigerianisch":["Kräftig, scharf und würzig, mit Eintöpfen und Reisgerichten.",["Jollof Rice","Egusi-Suppe","Suya"]],
-  "Südafrikanisch":["Regenbogenküche mit Grillkultur (Braai) und kapmalaiischen Einflüssen.",["Bobotie","Bunny Chow","Boerewors"]],
-  "Indisch":["Regional riesig: Gewürzmischungen, Linsen, Brot und Reis.",["Butter Chicken","Palak Paneer","Dal Tadka"]],
-  "Pakistanisch":["Fleischlastig und würzig, dazu Brot und Reis.",["Chicken Karahi","Biryani","Nihari"]],
-  "Sri-Lankisch":["Kokos, Curryblätter und Chili in scharfen Currys.",["Reis mit Currys","Kottu Roti","Hoppers"]],
-  "Nepalesisch":["Bergküche mit Linsen, Reis und gefüllten Teigtaschen.",["Dal Bhat","Momo","Thukpa"]],
-  "Chinesisch":["Acht große Regionalküchen, von mild-süß bis sehr scharf.",["Mapo Tofu","Kung Pao Huhn","Dim Sum"]],
-  "Japanisch":["Reduziert und saisonal, mit Umami und Präzision.",["Sushi","Ramen","Okonomiyaki"]],
-  "Koreanisch":["Fermentiertes, Scharfes und viele kleine Beilagen.",["Bibimbap","Kimchi-Jjigae","Bulgogi"]],
-  "Thailändisch":["Balance aus süß, sauer, salzig und scharf.",["Pad Thai","Tom Kha Gai","Grünes Curry"]],
-  "Vietnamesisch":["Frische Kräuter, Brühen und Reisnudeln: leicht und aromatisch.",["Phở","Bún chả","Bánh mì"]],
-  "Indonesisch":["Sambal, Erdnuss und Kokos, quer über tausende Inseln.",["Nasi Goreng","Rendang","Gado-Gado"]],
-  "Malaysisch":["Mix aus malaiischer, chinesischer und indischer Küche.",["Nasi Lemak","Laksa","Roti Canai"]],
-  "Philippinisch":["Süß-sauer-salzig mit Essig, Sojasauce und viel Knoblauch.",["Chicken Adobo","Sinigang","Lumpia"]],
-  "Mexikanisch":["Mais, Bohnen und Chili; viel mehr als Tex-Mex.",["Tacos al pastor","Mole poblano","Pozole"]],
-  "Peruanisch":["Anden, Küste und chinesisch-japanische Einflüsse treffen aufeinander.",["Ceviche","Lomo Saltado","Ají de Gallina"]],
-  "Brasilianisch":["Bohnen, Maniok und Fleisch vom Grill.",["Feijoada","Moqueca","Pão de Queijo"]],
-  "Argentinisch":["Asado-Kultur mit Rindfleisch und Chimichurri.",["Asado","Empanadas","Milanesa"]],
-  "Kolumbianisch":["Herzhafte Suppen, Arepas und tropische Früchte.",["Bandeja Paisa","Ajiaco","Arepas"]],
-  "Kubanisch":["Kreolisch, mit Schwein, Reis, Bohnen und Zitrus.",["Ropa Vieja","Moros y Cristianos","Cubano-Sandwich"]],
-  "Jamaikanisch":["Jerk-Gewürz, Scotch Bonnet und Kokos.",["Jerk Chicken","Ackee and Saltfish","Rice and Peas"]],
-  "US-Amerikanisch (Südstaaten/BBQ)":["Südstaaten-Soulfood und langsam gegarte BBQ-Klassiker.",["Pulled Pork","Gumbo","Mac and Cheese"]],
-  "Australisch":["Moderne Küche mit Grillkultur und frischen Meeresfrüchten.",["Barramundi","Lamingtons","Meat Pie"]],
-  "Mongolisch":["Fleisch und Milchprodukte, angepasst an das Leben in der Steppe.",["Buuz","Khuushuur","Khorkhog"]],
-  "Usbekisch":["Reisgerichte und Brot an der Seidenstraße.",["Plov","Lagman","Samsa"]]
+  "Italienisch":["Einfache Zutaten, regional sehr verschieden: Pasta und Olivenöl im Süden, Risotto und Butter im Norden.",[["Risotto alla Milanese", "Cremiger Reis mit Safran, Rinderbrühe und Parmesan."],["Pasta alla Norma", "Nudeln mit Tomaten, gebratener Aubergine und gesalzener Ricotta aus Sizilien."],["Saltimbocca", "Kalbsschnitzel mit Salbei und Schinken, in Weißwein gebraten."]]],
+  "Französisch":["Butter-Klassiker und rustikale Schmorgerichte; Technik und Saucen stehen im Mittelpunkt.",[["Coq au Vin", "Huhn, in Rotwein mit Speck, Pilzen und Zwiebeln geschmort."],["Ratatouille", "Provenzalisches Ofengemüse aus Aubergine, Zucchini, Paprika und Tomate."],["Quiche Lorraine", "Mürbeteigtorte mit Speck, Ei und Sahne."]]],
+  "Spanisch":["Tapas, Olivenöl und Meeresfrüchte, je nach Region von Paella bis Pintxos.",[["Paella valenciana", "Safranreis in der Pfanne mit Huhn, Kaninchen und grünen Bohnen."],["Tortilla española", "Dicke Kartoffel-Omelette mit Zwiebeln, warm oder kalt serviert."],["Gambas al ajillo", "Garnelen in Knoblauchöl mit Chili, dazu Brot."]]],
+  "Griechisch":["Mediterran mit Olivenöl, Oregano, Feta und viel Gegrilltem.",[["Moussaka", "Auflauf aus Aubergine, Hackfleisch und Béchamelsauce."],["Souvlaki", "Gegrillte Fleischspieße, im Fladenbrot mit Tzatziki."],["Spanakopita", "Blätterteigpastete mit Spinat und Feta."]]],
+  "Türkisch":["Osmanisches Erbe: Grillgerichte, Teigtaschen, Joghurt und viele Mezze.",[["Manti", "Kleine Teigtaschen mit Hackfleisch, mit Joghurt und Paprikabutter."],["Iskender Kebap", "Dönerfleisch auf Fladenbrot mit Tomatensauce, Joghurt und heißer Butter."],["Menemen", "Rührei mit Tomaten, Paprika und Zwiebeln, ein Frühstücksklassiker."]]],
+  "Deutsch":["Herzhaft und regional: Braten, Kartoffeln, Kohl und Brot.",[["Rouladen mit Rotkohl", "Rindfleisch gefüllt mit Speck, Gurke und Senf, dazu Kartoffeln."],["Käsespätzle", "Schwäbische Eierspätzle mit Käse und Röstzwiebeln überbacken."],["Kartoffelsuppe", "Sämige Suppe mit Gemüse, oft mit Würstchen."]]],
+  "Österreichisch":["Habsburgisch geprägt, mit Fleisch, Mehlspeisen und Süßem.",[["Wiener Schnitzel", "Paniertes Kalbsschnitzel, in Fett schwimmend ausgebacken."],["Tafelspitz", "Gekochtes Rindfleisch mit Meerrettich-Apfel und Schnittlauchsauce."],["Kaiserschmarrn", "Zerrissener Pfannkuchen mit Rosinen und Puderzucker."]]],
+  "Ungarisch":["Paprika ist das Herzstück; kräftige Eintöpfe mit Sauerrahm.",[["Gulasch", "Rindfleischeintopf mit viel Paprika und Zwiebeln."],["Lángos", "Frittiertes Hefebrot mit Sauerrahm und Käse."],["Paprikás", "Huhn in cremiger Paprika-Sauerrahm-Sauce, dazu Nockerl."]]],
+  "Polnisch":["Deftig mit Teigtaschen, Sauerkraut und Roter Bete.",[["Pierogi", "Teigtaschen mit Kartoffel-Quark, Sauerkraut oder Fleisch."],["Bigos", "Schmorgericht aus Sauerkraut, Weißkohl und verschiedenen Fleischsorten."],["Żurek", "Saure Roggenmehlsuppe mit Wurst und hartem Ei."]]],
+  "Russisch":["Suppen, Teigwaren und Sauerrahm, geprägt von langen Wintern.",[["Borschtsch", "Rote-Bete-Suppe mit Kohl und Rindfleisch, mit Sauerrahm."],["Pelmeni", "Kleine Hackfleisch-Teigtaschen, gekocht und mit Butter oder Smetana."],["Boeuf Stroganoff", "Rinderstreifen in Sauerrahm-Pilz-Sauce."]]],
+  "Georgisch":["Walnüsse, frische Kräuter, Käse und Brot an der Seidenstraße.",[["Khachapuri", "Brotschiffchen gefüllt mit Käse, Ei und Butter."],["Khinkali", "Gedrehte Teigtaschen mit Fleisch und Brühe, mit der Hand gegessen."],["Lobio", "Kidneybohnen mit Walnüssen, Koriander und Gewürzen."]]],
+  "Portugiesisch":["Viel Fisch, vor allem Stockfisch, dazu Reis und Eintöpfe.",[["Bacalhau à Brás", "Stockfisch mit Kartoffelstroh, Zwiebeln und Rührei."],["Caldo Verde", "Kartoffelsuppe mit Grünkohl und Chorizo."],["Pastéis de Nata", "Blätterteigtörtchen mit Vanillecreme."]]],
+  "Schwedisch":["Schlicht und saisonal: Fisch, Kartoffeln und Beeren.",[["Köttbullar", "Hackbällchen mit Sahnesauce, Kartoffelpüree und Preiselbeeren."],["Gravlax", "Mit Dill, Salz und Zucker gebeizter Lachs."],["Raggmunk", "Kartoffelpfannkuchen mit Speck und Preiselbeeren."]]],
+  "Britisch":["Hausmannskost und Pub-Klassiker.",[["Fish and Chips", "Frittierter Fisch im Bierteig mit dicken Pommes."],["Shepherd's Pie", "Hackfleisch mit Gemüse unter Kartoffelpüree überbacken."],["Sunday Roast", "Sonntagsbraten mit Ofenkartoffeln, Gemüse und Yorkshire Pudding."]]],
+  "Israelisch":["Frisch und vielfältig, von Straßenküche bis zu orientalischen Salaten.",[["Shakshuka", "Eier, pochiert in würziger Tomaten-Paprika-Sauce."],["Falafel", "Frittierte Kichererbsenbällchen mit Tahini im Fladenbrot."],["Sabich", "Pitabrot mit Aubergine, Ei, Salat und Amba-Sauce."]]],
+  "Libanesisch":["Mezze-Kultur mit Kräutern, Zitrone, Kichererbsen und Grillfleisch.",[["Tabbouleh", "Petersiliensalat mit Bulgur, Tomaten und Zitrone."],["Hummus", "Kichererbsenpüree mit Tahini, Zitrone und Olivenöl."],["Kibbeh", "Frittierte Bulgur-Hackfleisch-Röllchen mit Pinienkernen."]]],
+  "Persisch":["Duftender Reis mit Safran, Kräutern und süß-sauren Schmorgerichten.",[["Ghormeh Sabzi", "Kräutereintopf mit Lamm, roten Bohnen und getrockneten Limetten."],["Tahdig", "Knusprige Reiskruste vom Topfboden, mit Safran."],["Joojeh Kabab", "Safran-Hähnchenspieße vom Grill mit Reis."]]],
+  "Marokkanisch":["Gewürzreiche Tajines und Couscous mit süß-herzhaften Aromen.",[["Lamm-Tajine", "Langsam geschmort mit Trockenfrüchten, Mandeln und Gewürzen."],["Couscous mit Gemüse", "Dampfgegarter Grieß mit Gemüse und Kichererbsen."],["Harira", "Tomatensuppe mit Linsen, Kichererbsen und Koriander."]]],
+  "Äthiopisch":["Scharfe Eintöpfe (Wot), die man mit Injera-Fladen von Hand isst.",[["Doro Wot", "Scharfer Hühnereintopf mit Berbere und gekochten Eiern."],["Misir Wot", "Rote Linsen in scharfer Berbere-Sauce, vegan."],["Kitfo", "Fein gehacktes Rindfleisch mit Chilibutter, roh oder leicht gegart."]]],
+  "Nigerianisch":["Kräftig, scharf und würzig, mit Eintöpfen und Reisgerichten.",[["Jollof Rice", "Reis in Tomaten-Paprika-Sauce, ein Partyklassiker."],["Egusi-Suppe", "Eintopf mit gemahlenen Melonenkernen, Blattgemüse und Fleisch."],["Suya", "Gegrillte Fleischspieße mit scharfer Erdnussgewürzmischung."]]],
+  "Südafrikanisch":["Regenbogenküche mit Grillkultur (Braai) und kapmalaiischen Einflüssen.",[["Bobotie", "Hackfleischauflauf mit Curry, Rosinen und Eiermilch."],["Bunny Chow", "Ausgehöhltes Brot, gefüllt mit Curry."],["Boerewors", "Gewürzte Grillwurst, meist aus Rindfleisch."]]],
+  "Indisch":["Regional riesig: Gewürzmischungen, Linsen, Brot und Reis.",[["Butter Chicken", "Tandoori-Huhn in cremiger Tomaten-Butter-Sauce."],["Palak Paneer", "Frischkäsewürfel in Spinatsauce."],["Dal Tadka", "Linsen, mit Kreuzkümmel, Knoblauch und Chili aufgeschmälzt."]]],
+  "Pakistanisch":["Fleischlastig und würzig, dazu Brot und Reis.",[["Chicken Karahi", "Huhn im Wok mit Tomaten, Ingwer und grünen Chilis."],["Biryani", "Reis geschichtet mit mariniertem Fleisch und Gewürzen."],["Nihari", "Langsam gegarter Rindfleischeintopf, traditionell zum Frühstück."]]],
+  "Sri-Lankisch":["Kokos, Curryblätter und Chili in scharfen Currys.",[["Reis mit Currys", "Reis mit mehreren Currys, etwa Linsen, Kürbis und Fisch."],["Kottu Roti", "Zerhackte Roti mit Gemüse, Ei und Fleisch auf der Platte."],["Hoppers", "Schalenförmige Pfannkuchen aus Reismehl und Kokosmilch."]]],
+  "Nepalesisch":["Bergküche mit Linsen, Reis und gefüllten Teigtaschen.",[["Dal Bhat", "Linsensuppe mit Reis, Gemüse und Pickles, das Alltagsessen."],["Momo", "Gedämpfte Teigtaschen mit Fleisch oder Gemüse, mit scharfer Sauce."],["Thukpa", "Nudelsuppe mit Gemüse und Fleisch aus dem Himalaya."]]],
+  "Chinesisch":["Acht große Regionalküchen, von mild-süß bis sehr scharf.",[["Mapo Tofu", "Seidentofu und Hackfleisch in scharfer Sichuan-Pfeffer-Sauce."],["Kung Pao Huhn", "Hähnchen mit Erdnüssen, Chili und Frühlingszwiebeln."],["Dim Sum", "Kleine gedämpfte Häppchen, etwa Teigtaschen und Brötchen."]]],
+  "Japanisch":["Reduziert und saisonal, mit Umami und Präzision.",[["Sushi", "Essigreis mit rohem Fisch oder Gemüse, als Rolle oder Nigiri."],["Ramen", "Nudelsuppe in Schweine- oder Hühnerbrühe mit Ei und Chashu."],["Okonomiyaki", "Herzhafter Kohl-Pfannkuchen mit Sauce und Bonito-Flocken."]]],
+  "Koreanisch":["Fermentiertes, Scharfes und viele kleine Beilagen.",[["Bibimbap", "Reis mit Gemüse, Fleisch, Ei und Gochujang, vor dem Essen gemischt."],["Kimchi-Jjigae", "Scharfer Eintopf mit gereiftem Kimchi und Tofu."],["Bulgogi", "Dünn geschnittenes, mariniertes Rindfleisch vom Grill."]]],
+  "Thailändisch":["Balance aus süß, sauer, salzig und scharf.",[["Pad Thai", "Gebratene Reisnudeln mit Ei, Erdnüssen und Tamarinde."],["Tom Kha Gai", "Hühnersuppe mit Kokosmilch, Galgant und Zitronengras."],["Grünes Curry", "Kokoscurry mit grüner Currypaste, Thai-Basilikum und Gemüse."]]],
+  "Vietnamesisch":["Frische Kräuter, Brühen und Reisnudeln: leicht und aromatisch.",[["Phở", "Rinderbrühe mit Reisnudeln, Kräutern und Limette."],["Bún chả", "Gegrillte Schweinebällchen mit Reisnudeln und süß-saurer Sauce."],["Bánh mì", "Baguette mit Fleisch, eingelegtem Gemüse und Kräutern."]]],
+  "Indonesisch":["Sambal, Erdnuss und Kokos, quer über tausende Inseln.",[["Nasi Goreng", "Gebratener Reis mit Süßsojasauce, Ei und Sambal."],["Rendang", "Rindfleisch, stundenlang in Kokosmilch und Gewürzen geschmort."],["Gado-Gado", "Gemüsesalat mit Ei und Erdnusssauce."]]],
+  "Malaysisch":["Mix aus malaiischer, chinesischer und indischer Küche.",[["Nasi Lemak", "Kokosreis mit Sambal, Erdnüssen, Ei und Gurke."],["Laksa", "Scharfe Nudelsuppe mit Kokosmilch und Garnelen."],["Roti Canai", "Fladenbrot, in Lagen gebacken, mit Curry zum Dippen."]]],
+  "Philippinisch":["Süß-sauer-salzig mit Essig, Sojasauce und viel Knoblauch.",[["Chicken Adobo", "Huhn, in Essig, Sojasauce, Knoblauch und Lorbeer geschmort."],["Sinigang", "Saure Suppe mit Tamarinde, Gemüse und Fleisch oder Fisch."],["Lumpia", "Knusprige Frühlingsrollen mit Fleisch-Gemüse-Füllung."]]],
+  "Mexikanisch":["Mais, Bohnen und Chili; viel mehr als Tex-Mex.",[["Tacos al pastor", "Mariniertes Schweinefleisch vom Spieß mit Ananas im Maisfladen."],["Mole poblano", "Hähnchen in dunkler Sauce aus Chilis, Nüssen und etwas Schokolade."],["Pozole", "Eintopf aus Mais und Schweinefleisch mit Garnitur."]]],
+  "Peruanisch":["Anden, Küste und chinesisch-japanische Einflüsse treffen aufeinander.",[["Ceviche", "Roher Fisch, in Limettensaft mit Zwiebeln und Chili gegart."],["Lomo Saltado", "Rinderstreifen mit Zwiebeln, Tomaten und Pommes im Wok."],["Ají de Gallina", "Zerzupftes Huhn in cremiger Gelbchili-Sauce."]]],
+  "Brasilianisch":["Bohnen, Maniok und Fleisch vom Grill.",[["Feijoada", "Eintopf aus schwarzen Bohnen mit Schweinefleisch und Wurst."],["Moqueca", "Fisch in Kokosmilch, Tomaten und Palmöl."],["Pão de Queijo", "Käsebrötchen aus Maniokmehl, innen weich."]]],
+  "Argentinisch":["Asado-Kultur mit Rindfleisch und Chimichurri.",[["Asado", "Fleisch vom Holzkohlegrill, meist Rind, mit Chimichurri."],["Empanadas", "Gefüllte Teigtaschen mit Hackfleisch, Ei und Oliven."],["Milanesa", "Paniertes Rindfleisch, gern als Napolitana mit Käse."]]],
+  "Kolumbianisch":["Herzhafte Suppen, Arepas und tropische Früchte.",[["Bandeja Paisa", "Platte mit Bohnen, Reis, Fleisch, Ei und Banane."],["Ajiaco", "Hühnersuppe mit drei Kartoffelsorten, Mais und Kapern."],["Arepas", "Gefüllte oder belegte Maisfladen."]]],
+  "Kubanisch":["Kreolisch, mit Schwein, Reis, Bohnen und Zitrus.",[["Ropa Vieja", "Zerzupftes Rindfleisch in Tomaten-Paprika-Sauce."],["Moros y Cristianos", "Reis mit schwarzen Bohnen, mit Knoblauch gewürzt."],["Cubano-Sandwich", "Gepresstes Sandwich mit Schinken, Schweinebraten und Käse."]]],
+  "Jamaikanisch":["Jerk-Gewürz, Scotch Bonnet und Kokos.",[["Jerk Chicken", "Hähnchen mit scharfer Piment-Marinade, langsam gegrillt."],["Ackee and Saltfish", "Nationalgericht mit Ackee-Frucht und gesalzenem Fisch."],["Rice and Peas", "Reis mit Kidneybohnen und Kokosmilch."]]],
+  "US-Amerikanisch (Südstaaten/BBQ)":["Südstaaten-Soulfood und langsam gegarte BBQ-Klassiker.",[["Pulled Pork", "Stundenlang gegarter Schweinenacken, zerzupft im Brötchen."],["Gumbo", "Dicker Eintopf aus Louisiana mit Wurst, Meeresfrüchten und Okra."],["Mac and Cheese", "Makkaroni in Käsesauce, überbacken."]]],
+  "Australisch":["Moderne Küche mit Grillkultur und frischen Meeresfrüchten.",[["Barramundi", "Gebratener Fisch mit Zitrone und Gemüse."],["Lamingtons", "Schokoladen-Kokos-Würfel aus Biskuit."],["Meat Pie", "Herzhafte Pastete mit Hackfleisch und Sauce."]]],
+  "Mongolisch":["Fleisch und Milchprodukte, angepasst an das Leben in der Steppe.",[["Buuz", "Gedämpfte Teigtaschen mit Hammelfleisch."],["Khuushuur", "Frittierte Fleischteigtaschen."],["Khorkhog", "Fleisch mit heißen Steinen im Topf gegart."]]],
+  "Usbekisch":["Reisgerichte und Brot an der Seidenstraße.",[["Plov", "Reis mit Lamm, Möhren und Zwiebeln in einem Kessel."],["Lagman", "Handgezogene Nudeln in Fleisch-Gemüse-Sauce."],["Samsa", "Blätterteigtaschen mit Fleisch aus dem Ofen."]]]
 };
 function infoHtml(n) {
   const i = INFO[n]; if (!i) return "";
-  return `<p class="desc">${esc(i[0])}</p><div class="dishes">${i[1].map(d => `<span>${esc(d)}</span>`).join("")}</div>`;
+  return `<p class="desc">${esc(i[0])}</p><ul class="dishes">` + i[1].map(d => {
+    const [t, x] = d;
+    return `<li><b>${esc(t)}</b><span>${esc(x)}</span><a href="https://www.chefkoch.de/rs/s0/${encodeURIComponent(t)}/Rezepte.html" target="_blank" rel="noopener">Rezepte suchen ↗</a></li>`;
+  }).join("") + `</ul>`;
 }
 const KEY = "kuechenrad.v1";
 let state = load();
@@ -265,7 +270,10 @@ $("addForm").onsubmit = e => {
   state.items.push({ f: "🍴", n: v, on: true }); $("addInput").value = ""; save(); render();
 };
 $("reset").onclick = () => {
-  if (spinning || !confirm("Alle Küchen wieder ins Rad legen und den Verlauf löschen?")) return;
+  if (spinning) return;
+  const b = $("reset");
+  if (!b.dataset.arm) { b.dataset.arm = "1"; b.textContent = "Wirklich zurücksetzen?"; setTimeout(() => { delete b.dataset.arm; b.textContent = "Alle zurücksetzen"; }, 3000); return; }
+  delete b.dataset.arm; b.textContent = "Alle zurücksetzen";
   state.items.forEach(i => i.on = true); state.hist = []; save(); render();
   $("result").innerHTML = `<div class="hint">Drück auf „Drehen“, um die nächste Küche zu bestimmen.</div>`;
 };
