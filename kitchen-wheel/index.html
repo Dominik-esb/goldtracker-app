@@ -29,6 +29,10 @@
   .result { text-align:center; margin-top:16px; min-height:96px; }
   .result .flag { font-size:3rem; line-height:1; }
   .result .name { font-size:1.6rem; font-weight:700; margin:4px 0 10px; }
+  .result .desc { margin:0 auto 10px; max-width:46ch; color:var(--muted); }
+  .dishes { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:12px; }
+  .dishes span { border:1px solid var(--line); border-radius:999px; padding:4px 12px; font-size:.9rem; }
+  .list li .n { cursor:pointer; }
   .result .hint { color:var(--muted); }
   button.btn { font:inherit; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:8px 14px; cursor:pointer; }
   button.btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
@@ -64,7 +68,7 @@
       <canvas id="wheel" width="1040" height="1040"></canvas>
       <button class="spin" id="spin">DREHEN</button>
     </div>
-    <div class="result" id="result"><div class="hint">Drück auf „Drehen“, um die nächste Küche zu bestimmen.</div></div>
+    <div class="result" id="result"><div class="hint">Drück auf „Drehen“, um die nächste Küche zu bestimmen. Ein Klick auf einen Namen in der Liste zeigt Infos und Beispielgerichte.</div></div>
     <label class="auto"><input type="checkbox" id="auto"> Gewählte Küche automatisch entfernen</label>
   </section>
 
@@ -99,6 +103,56 @@ const DEFAULTS = [
   ["🇧🇷","Brasilianisch"],["🇦🇷","Argentinisch"],["🇨🇴","Kolumbianisch"],["🇨🇺","Kubanisch"],["🇯🇲","Jamaikanisch"],
   ["🇺🇸","US-Amerikanisch (Südstaaten/BBQ)"],["🇦🇺","Australisch"],["🇲🇳","Mongolisch"],["🇺🇿","Usbekisch"]
 ];
+const INFO = {
+  "Italienisch":["Einfache Zutaten, regional sehr verschieden: Pasta und Olivenöl im Süden, Risotto und Butter im Norden.",["Risotto alla Milanese","Pasta alla Norma","Saltimbocca"]],
+  "Französisch":["Butter-Klassiker und rustikale Schmorgerichte; Technik und Saucen stehen im Mittelpunkt.",["Coq au Vin","Ratatouille","Quiche Lorraine"]],
+  "Spanisch":["Tapas, Olivenöl und Meeresfrüchte, je nach Region von Paella bis Pintxos.",["Paella valenciana","Tortilla española","Gambas al ajillo"]],
+  "Griechisch":["Mediterran mit Olivenöl, Oregano, Feta und viel Gegrilltem.",["Moussaka","Souvlaki","Spanakopita"]],
+  "Türkisch":["Osmanisches Erbe: Grillgerichte, Teigtaschen, Joghurt und viele Mezze.",["Manti","Iskender Kebap","Menemen"]],
+  "Deutsch":["Herzhaft und regional: Braten, Kartoffeln, Kohl und Brot.",["Rouladen mit Rotkohl","Käsespätzle","Kartoffelsuppe"]],
+  "Österreichisch":["Habsburgisch geprägt, mit Fleisch, Mehlspeisen und Süßem.",["Wiener Schnitzel","Tafelspitz","Kaiserschmarrn"]],
+  "Ungarisch":["Paprika ist das Herzstück; kräftige Eintöpfe mit Sauerrahm.",["Gulasch","Lángos","Paprikás"]],
+  "Polnisch":["Deftig mit Teigtaschen, Sauerkraut und Roter Bete.",["Pierogi","Bigos","Żurek"]],
+  "Russisch":["Suppen, Teigwaren und Sauerrahm, geprägt von langen Wintern.",["Borschtsch","Pelmeni","Boeuf Stroganoff"]],
+  "Georgisch":["Walnüsse, frische Kräuter, Käse und Brot an der Seidenstraße.",["Khachapuri","Khinkali","Lobio"]],
+  "Portugiesisch":["Viel Fisch, vor allem Stockfisch, dazu Reis und Eintöpfe.",["Bacalhau à Brás","Caldo Verde","Pastéis de Nata"]],
+  "Schwedisch":["Schlicht und saisonal: Fisch, Kartoffeln und Beeren.",["Köttbullar","Gravlax","Raggmunk"]],
+  "Britisch":["Hausmannskost und Pub-Klassiker.",["Fish and Chips","Shepherd's Pie","Sunday Roast"]],
+  "Israelisch":["Frisch und vielfältig, von Straßenküche bis zu orientalischen Salaten.",["Shakshuka","Falafel","Sabich"]],
+  "Libanesisch":["Mezze-Kultur mit Kräutern, Zitrone, Kichererbsen und Grillfleisch.",["Tabbouleh","Hummus","Kibbeh"]],
+  "Persisch":["Duftender Reis mit Safran, Kräutern und süß-sauren Schmorgerichten.",["Ghormeh Sabzi","Tahdig","Joojeh Kabab"]],
+  "Marokkanisch":["Gewürzreiche Tajines und Couscous mit süß-herzhaften Aromen.",["Lamm-Tajine","Couscous mit Gemüse","Harira"]],
+  "Äthiopisch":["Scharfe Eintöpfe (Wot), die man mit Injera-Fladen von Hand isst.",["Doro Wot","Misir Wot","Kitfo"]],
+  "Nigerianisch":["Kräftig, scharf und würzig, mit Eintöpfen und Reisgerichten.",["Jollof Rice","Egusi-Suppe","Suya"]],
+  "Südafrikanisch":["Regenbogenküche mit Grillkultur (Braai) und kapmalaiischen Einflüssen.",["Bobotie","Bunny Chow","Boerewors"]],
+  "Indisch":["Regional riesig: Gewürzmischungen, Linsen, Brot und Reis.",["Butter Chicken","Palak Paneer","Dal Tadka"]],
+  "Pakistanisch":["Fleischlastig und würzig, dazu Brot und Reis.",["Chicken Karahi","Biryani","Nihari"]],
+  "Sri-Lankisch":["Kokos, Curryblätter und Chili in scharfen Currys.",["Reis mit Currys","Kottu Roti","Hoppers"]],
+  "Nepalesisch":["Bergküche mit Linsen, Reis und gefüllten Teigtaschen.",["Dal Bhat","Momo","Thukpa"]],
+  "Chinesisch":["Acht große Regionalküchen, von mild-süß bis sehr scharf.",["Mapo Tofu","Kung Pao Huhn","Dim Sum"]],
+  "Japanisch":["Reduziert und saisonal, mit Umami und Präzision.",["Sushi","Ramen","Okonomiyaki"]],
+  "Koreanisch":["Fermentiertes, Scharfes und viele kleine Beilagen.",["Bibimbap","Kimchi-Jjigae","Bulgogi"]],
+  "Thailändisch":["Balance aus süß, sauer, salzig und scharf.",["Pad Thai","Tom Kha Gai","Grünes Curry"]],
+  "Vietnamesisch":["Frische Kräuter, Brühen und Reisnudeln: leicht und aromatisch.",["Phở","Bún chả","Bánh mì"]],
+  "Indonesisch":["Sambal, Erdnuss und Kokos, quer über tausende Inseln.",["Nasi Goreng","Rendang","Gado-Gado"]],
+  "Malaysisch":["Mix aus malaiischer, chinesischer und indischer Küche.",["Nasi Lemak","Laksa","Roti Canai"]],
+  "Philippinisch":["Süß-sauer-salzig mit Essig, Sojasauce und viel Knoblauch.",["Chicken Adobo","Sinigang","Lumpia"]],
+  "Mexikanisch":["Mais, Bohnen und Chili; viel mehr als Tex-Mex.",["Tacos al pastor","Mole poblano","Pozole"]],
+  "Peruanisch":["Anden, Küste und chinesisch-japanische Einflüsse treffen aufeinander.",["Ceviche","Lomo Saltado","Ají de Gallina"]],
+  "Brasilianisch":["Bohnen, Maniok und Fleisch vom Grill.",["Feijoada","Moqueca","Pão de Queijo"]],
+  "Argentinisch":["Asado-Kultur mit Rindfleisch und Chimichurri.",["Asado","Empanadas","Milanesa"]],
+  "Kolumbianisch":["Herzhafte Suppen, Arepas und tropische Früchte.",["Bandeja Paisa","Ajiaco","Arepas"]],
+  "Kubanisch":["Kreolisch, mit Schwein, Reis, Bohnen und Zitrus.",["Ropa Vieja","Moros y Cristianos","Cubano-Sandwich"]],
+  "Jamaikanisch":["Jerk-Gewürz, Scotch Bonnet und Kokos.",["Jerk Chicken","Ackee and Saltfish","Rice and Peas"]],
+  "US-Amerikanisch (Südstaaten/BBQ)":["Südstaaten-Soulfood und langsam gegarte BBQ-Klassiker.",["Pulled Pork","Gumbo","Mac and Cheese"]],
+  "Australisch":["Moderne Küche mit Grillkultur und frischen Meeresfrüchten.",["Barramundi","Lamingtons","Meat Pie"]],
+  "Mongolisch":["Fleisch und Milchprodukte, angepasst an das Leben in der Steppe.",["Buuz","Khuushuur","Khorkhog"]],
+  "Usbekisch":["Reisgerichte und Brot an der Seidenstraße.",["Plov","Lagman","Samsa"]]
+};
+function infoHtml(n) {
+  const i = INFO[n]; if (!i) return "";
+  return `<p class="desc">${esc(i[0])}</p><div class="dishes">${i[1].map(d => `<span>${esc(d)}</span>`).join("")}</div>`;
+}
 const KEY = "kuechenrad.v1";
 let state = load();
 let rot = 0, spinning = false, current = null;
@@ -173,11 +227,11 @@ function finish(it) {
   showResult(it, state.auto);
 }
 
-function showResult(it, removed) {
-  $("result").innerHTML = `<div class="flag">${it.f}</div><div class="name">${esc(it.n)}</div>` +
-    (removed ? `<div class="hint">Aus dem Rad entfernt – guten Appetit! 🍽️</div>`
+function showResult(it, removed, preview) {
+  $("result").innerHTML = `<div class="flag">${it.f}</div><div class="name">${esc(it.n)}</div>${infoHtml(it.n)}` +
+    (preview ? "" : removed ? `<div class="hint">Aus dem Rad entfernt – guten Appetit! 🍽️</div>`
              : `<div class="row"><button class="btn primary" id="rm">Entfernen (gekocht)</button><button class="btn" id="again">Nochmal drehen</button></div>`);
-  if (!removed) {
+  if (!removed && !preview) {
     $("rm").onclick = () => { it.on = false; save(); render(); $("result").innerHTML = `<div class="hint">${it.f} ${esc(it.n)} entfernt. Guten Appetit! 🍽️</div>`; };
     $("again").onclick = spin;
   }
@@ -187,7 +241,7 @@ const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'
 
 function render() {
   $("list").innerHTML = state.items.map((it, i) =>
-    `<li class="${it.on ? "" : "off"}"><span>${it.f}</span><span class="n">${esc(it.n)}</span>` +
+    `<li class="${it.on ? "" : "off"}"><span>${it.f}</span><span class="n" data-i="${i}" title="Infos anzeigen">${esc(it.n)}</span>` +
     `<button data-t="${i}" title="${it.on ? "Entfernen" : "Wieder hinzufügen"}">${it.on ? "✕" : "↺"}</button></li>`).join("");
   $("count").textContent = active().length + " / " + state.items.length;
   $("hist").innerHTML = state.hist.length
@@ -201,6 +255,7 @@ function render() {
 $("spin").onclick = spin;
 $("auto").onchange = e => { state.auto = e.target.checked; save(); };
 $("list").onclick = e => {
+  const nm = e.target.closest(".n"); if (nm && !spinning) { showResult(state.items[+nm.dataset.i], false, true); return; }
   const b = e.target.closest("button"); if (!b || spinning) return;
   const it = state.items[+b.dataset.t]; it.on = !it.on; save(); render();
 };
