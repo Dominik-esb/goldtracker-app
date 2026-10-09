@@ -34,6 +34,9 @@
   .deep dt { font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); margin-top:8px; }
   .deep dd { margin:0; line-height:1.45; }
   .dh { font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); margin:0 auto 8px; max-width:46ch; text-align:left; }
+  .subs { text-align:left; max-width:46ch; margin:0 auto 14px; display:grid; gap:4px; }
+  .subs li { line-height:1.4; }
+  .subs li b { font-weight:600; }
   .dishes { text-align:left; display:grid; gap:8px; margin:0 auto 12px; max-width:46ch; }
   .dishes li { border:1px solid var(--line); border-radius:10px; padding:8px 12px; display:grid; gap:2px; }
   .dishes li span { color:var(--muted); font-size:.92rem; }
@@ -201,11 +204,55 @@ const DEEP = {
   "Mongolisch":["Nomadenkultur der Steppe: viel Fleisch und Milch, wenig Gemüse, kaltes Klima.", "Salz, Kreuzkümmel, wenig Gewürz, Zwiebeln, Knoblauch.", "Kochen in Wasser, Dämpfen, Garen mit heißen Steinen."],
   "Usbekisch":["Die Seidenstraße (Samarkand, Buchara) verband persische, turkische und russische Einflüsse.", "Kreuzkümmel, Berberitzen, Koriander, Safran, Zwiebeln.", "Kessel (Kazan) über offenem Feuer, Tandoor-Ofen, Plov wird in Schichten gegart."]
 };
+const SUB = {
+  "Italienisch":[["Norditalien", "Butter, Reis, Polenta und Käse"], ["Toskana", "schlichte Bohnen-, Brot- und Grillgerichte"], ["Süditalien", "Tomaten, Olivenöl, Aubergine, Pasta"], ["Sizilien", "arabisch geprägt, mit Zitrusfrüchten, Fisch und Süßem"]],
+  "Französisch":[["Provence", "Olivenöl, Kräuter und Fisch"], ["Burgund", "Schmorgerichte in Rotwein wie Coq au Vin"], ["Elsass", "deutsch beeinflusst, mit Flammkuchen und Choucroute"], ["Bretagne", "Meeresfrüchte, Crêpes und gesalzene Butter"]],
+  "Spanisch":[["Baskenland", "Pintxos und Fischgerichte"], ["Katalonien", "Verbindung von Meer und Berg, z. B. Huhn mit Garnelen"], ["Andalusien", "Frittiertes und kalte Suppen wie Gazpacho"], ["Valencia", "Heimat der Paella"]],
+  "Griechisch":[["Kreta", "viel Gemüse, wilde Kräuter und Olivenöl"], ["Ionische Inseln", "venezianisch beeinflusst, etwa mit Pastitsada"], ["Nordgriechenland", "türkisch-balkanische Einflüsse"]],
+  "Türkisch":[["Ägäis", "Olivenöl, Gemüse und Kräuter"], ["Südosten (Gaziantep)", "scharfer Kebap und Baklava"], ["Schwarzmeerküste", "Fisch, Mais und Kohl"], ["Istanbul", "Palastküche und Meze"]],
+  "Deutsch":[["Bayern", "Fleischgerichte, Knödel, Brezeln"], ["Schwaben", "Spätzle und Maultaschen"], ["Norddeutschland", "Fisch, Grünkohl, Labskaus"], ["Rheinland", "Sauerbraten und Himmel un Ääd"]],
+  "Österreichisch":[["Wien", "Schnitzel, Tafelspitz, Kaffeehauskultur"], ["Tirol", "Knödel, Speck und Käse"], ["Steiermark", "Kürbiskernöl und Backhendl"], ["Kärnten", "Kasnudeln"]],
+  "Ungarisch":[["Große Tiefebene", "Gulasch und Fischsuppe über dem Feuer"], ["Transdanubien", "deutsch-österreichische Einflüsse"]],
+  "Polnisch":[["Masuren", "Fisch und Pilze"], ["Schlesien", "Klöße und Rouladen"], ["Krakau und Kleinpolen", "Pierogi und Obwarzanek"], ["Podhale (Tatra)", "Schafskäse Oscypek"]],
+  "Russisch":[["Sibirien", "Pelmeni, Fisch und Wild"], ["Kaukasus-Einfluss", "Schaschlik und Gewürze aus dem Süden"], ["Moskau und St. Petersburg", "Adelsküche mit französischem Einfluss"]],
+  "Georgisch":[["Adscharien", "Käsebrot Adjaruli Khachapuri"], ["Kachetien", "Weinregion mit Fleischgerichten"], ["Mingrelien", "scharf, mit Walnüssen und Käse"]],
+  "Portugiesisch":[["Alentejo", "Schwein und Brotgerichte"], ["Minho", "Gemüsesuppen und Vinho Verde"], ["Madeira und Azoren", "Inselküche"], ["Lissabon und Algarve", "Fisch und Meeresfrüchte"]],
+  "Schwedisch":[["Skåne", "Aal und Äpfel, dänisch beeinflusst"], ["Norrland", "Rentier, Fisch und Beeren"], ["Samische Küche", "getrocknetes Rentier und Fisch"]],
+  "Britisch":[["England", "Roast und Pies"], ["Schottland", "Haggis und Porridge"], ["Wales", "Cawl, ein Lammeintopf"], ["Nordirland", "Ulster Fry"]],
+  "Israelisch":[["Sephardisch", "mediterran, z. B. Fisch mit Tomaten"], ["Aschkenasisch", "osteuropäisch, z. B. Gefilte Fisch"], ["Mizrachisch", "irakisch und jemenitisch beeinflusst"], ["Arabisch-israelisch", "z. B. Maqluba"]],
+  "Libanesisch":[["Berg-Libanon", "Getreide und Kibbeh"], ["Küste", "Fisch und Meeresfrüchte"], ["Bekaa-Tal", "Lamm und Obstanbau"]],
+  "Persisch":[["Gilan (Nordiran)", "Reis, Fisch und viele Kräuter"], ["Südiran", "scharf, mit Fisch und Tamarinde"], ["Täbris (Aserbaidschan)", "Teigsuppen und Fleischgerichte"], ["Isfahan", "Beryani und Süßes (Gaz)"]],
+  "Marokkanisch":[["Fès", "Palastküche mit süß-herzhaften Pasteten"], ["Marrakesch", "Tangia, im Tontopf in der Glut gegart"], ["Berberküche", "Tajines und Gerstengerichte"], ["Küste (Essaouira)", "Fisch und Meeresfrüchte"]],
+  "Äthiopisch":[["Amharisch", "Berbere, Wot und Kitfo"], ["Tigrinya", "ähnlich, oft mit mehr Butter"], ["Fastenküche (Tsom)", "vegan, an etwa 200 Tagen im Jahr"]],
+  "Nigerianisch":[["Yoruba (Südwesten)", "Jollof Rice und Amala"], ["Igbo (Südosten)", "Egusi und Ofe Onugbu"], ["Hausa (Norden)", "Suya und Tuwo"]],
+  "Südafrikanisch":[["Kapmalaiisch", "süß-würzig, z. B. Bobotie"], ["Zulu", "Maisbrei Pap und Fleischgerichte"], ["Afrikaans", "Boerewors und Braai"], ["Indisch-Durban", "Bunny Chow und Currys"]],
+  "Indisch":[["Nordindisch", "Weizenbrot, Milchprodukte, Tandoor"], ["Südindisch", "Reis, Kokos, Dosa und Idli"], ["Bengalisch", "Fisch und Senföl"], ["Gujarati", "vegetarisch und leicht süß"], ["Goa", "portugiesische Einflüsse, z. B. Vindaloo"]],
+  "Pakistanisch":[["Punjabi", "Tandoori-Gerichte und Lassi"], ["Sindhi", "Fischcurrys"], ["Belutschisch", "Sajji, am Spieß gegrilltes Lamm"], ["Paschtunisch", "Lamm und Chapli Kebab"]],
+  "Sri-Lankisch":[["Jaffna (Norden)", "sehr scharf, tamilisch geprägt"], ["Kandy (Bergland)", "Currys mit Kokos"], ["Küste", "Fisch und Meeresfrüchte"], ["Burgher", "Lamprais, niederländisch geprägt"]],
+  "Nepalesisch":[["Newari", "Festgerichte und Büffelfleisch"], ["Thakali", "Dal Bhat aus den Bergen"], ["Tibetisch", "Momo und Thukpa"]],
+  "Chinesisch":[["Sichuan", "scharf und betäubend mit Sichuanpfeffer"], ["Kanton", "mild, Dim Sum und Gedämpftes"], ["Shandong", "Brühen und Meeresfrüchte"], ["Hunan", "scharf und sauer"], ["Huaiyang", "fein, mit viel Messerarbeit"]],
+  "Japanisch":[["Kansai (Osaka)", "Okonomiyaki und Takoyaki"], ["Kanto (Tokio)", "Sushi und kräftigere Sojasauce"], ["Hokkaido", "Meeresfrüchte und Miso-Ramen"], ["Okinawa", "Schwein und Bittergurke"]],
+  "Koreanisch":[["Seoul", "ehemalige Hofküche"], ["Jeolla", "reiche Beilagenkultur"], ["Jeju", "Meeresfrüchte und Schwein"], ["Gyeongsang", "scharf und salzig"]],
+  "Thailändisch":[["Nordthailand", "Klebreis und Khao Soi"], ["Isaan (Nordosten)", "sehr scharf, Som Tam und Laab"], ["Südthailand", "scharf, mit Kokos und Kurkuma"], ["Zentralthailand", "Bangkok und Hofküche"]],
+  "Vietnamesisch":[["Norden (Hanoi)", "Phở, eher mild"], ["Mitte (Huế)", "scharf, Kaiserhofküche"], ["Süden (Saigon)", "süßer, mit vielen Kräutern"]],
+  "Indonesisch":[["Padang (Sumatra)", "Rendang und scharfe Gerichte"], ["Java", "süßer, mit Süßsojasauce"], ["Bali", "Babi Guling, Spanferkel"], ["Manado (Sulawesi)", "sehr scharf"]],
+  "Malaysisch":[["Malaiisch", "Nasi Lemak und Rendang"], ["Chinesisch-malaysisch", "Wok- und Nudelgerichte"], ["Indisch-malaysisch", "Roti Canai und Currys"], ["Nyonya (Peranakan)", "Mischung aus chinesischer und malaiischer Küche"]],
+  "Philippinisch":[["Luzon", "Adobo und Sinigang"], ["Bicol", "scharf, mit Kokosmilch"], ["Visayas", "süß, Lechon aus Cebu"], ["Mindanao", "muslimisch geprägt, mit Kokos und Gewürzen"]],
+  "Mexikanisch":[["Oaxaca", "Moles und Tlayudas"], ["Yucatán", "Cochinita Pibil mit Achiote"], ["Puebla", "Mole Poblano"], ["Norden", "Rindfleisch und Weizentortillas"], ["Baja California", "Fischtacos"]],
+  "Peruanisch":[["Küste (Lima)", "Ceviche und Meeresfrüchte"], ["Anden", "Kartoffeln, Quinoa, Meerschweinchen"], ["Amazonas", "Fisch und tropische Früchte"], ["Nikkei und Chifa", "japanisch und chinesisch geprägt"]],
+  "Brasilianisch":[["Bahia", "afrikanisch geprägt, mit Dendê-Öl"], ["Minas Gerais", "Käse und Bohnen"], ["Süden", "Churrasco der Gaúchos"], ["Amazonas", "Fisch und Maniok"]],
+  "Argentinisch":[["Pampa", "Asado"], ["Nordwesten (Anden)", "Empanadas und Humita"], ["Patagonien", "Lamm vom Feuer"], ["Buenos Aires", "italienisch beeinflusst, mit Pizza und Pasta"]],
+  "Kolumbianisch":[["Karibikküste", "Kokosreis und Fisch"], ["Anden (Paisa)", "Bandeja Paisa"], ["Bogotá", "Ajiaco"], ["Pazifik", "Fisch und Meeresfrüchte"]],
+  "US-Amerikanisch (Südstaaten/BBQ)":[["Texas", "Rinderbrust (Brisket)"], ["Carolina", "Pulled Pork mit Essigsauce"], ["Kansas City", "süßliche Tomatensauce"], ["Louisiana (Cajun und Kreolisch)", "Gumbo und Jambalaya"], ["Memphis", "Spareribs"]],
+  "Usbekisch":[["Taschkent", "Plov in großen Kesseln"], ["Samarkand", "bekanntes Fladenbrot"]]
+};
 function infoHtml(n) {
   const i = INFO[n]; if (!i) return "";
   const d = DEEP[n];
   const deep = d ? `<dl class="deep"><dt>Herkunft</dt><dd>${esc(d[0])}</dd><dt>Gewürze</dt><dd>${esc(d[1])}</dd><dt>Zubereitung</dt><dd>${esc(d[2])}</dd></dl>` : "";
-  return `<p class="desc">${esc(i[0])}</p>${deep}<h3 class="dh">Beispielgerichte</h3><ul class="dishes">` + i[1].map(d => {
+  const s = SUB[n];
+  const subs = s ? `<h3 class="dh">Regionale Stile</h3><ul class="subs">` + s.map(([a, b]) => `<li><b>${esc(a)}</b> ${esc(b)}</li>`).join("") + `</ul>` : "";
+  return `<p class="desc">${esc(i[0])}</p>${deep}${subs}<h3 class="dh">Beispielgerichte</h3><ul class="dishes">` + i[1].map(d => {
     const [t, x] = d;
     return `<li><b>${esc(t)}</b><span>${esc(x)}</span><a href="https://www.chefkoch.de/rs/s0/${encodeURIComponent(t)}/Rezepte.html" target="_blank" rel="noopener">Rezepte suchen ↗</a></li>`;
   }).join("") + `</ul>`;
