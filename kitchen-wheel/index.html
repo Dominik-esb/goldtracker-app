@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Küchen-Glücksrad</title>
+<style>
+  :root { --bg:#fff8ef; --card:#fff; --ink:#2b2118; --muted:#7a6a5a; --accent:#d9480f; --line:#ecdfd0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1d1712; --card:#2a221b; --ink:#f6ece0; --muted:#b5a592; --accent:#ff8a4c; --line:#3d3228; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+  header { text-align:center; padding:24px 16px 8px; }
+  h1 { margin:0; font-size:1.8rem; }
+  header p { margin:6px 0 0; color:var(--muted); }
+  main { max-width:1000px; margin:0 auto; padding:16px; display:grid; gap:24px; grid-template-columns: 1fr 340px; align-items:start; }
+  @media (max-width: 820px) { main { grid-template-columns: 1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; }
+  .wheel-wrap { position:relative; width:100%; max-width:520px; margin:0 auto; aspect-ratio:1; }
+  canvas { width:100%; height:100%; display:block; }
+  .pointer { position:absolute; top:-6px; left:50%; transform:translateX(-50%); width:0; height:0;
+    border-left:16px solid transparent; border-right:16px solid transparent; border-top:32px solid var(--ink);
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.35)); z-index:2; }
+  .spin { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:22%; aspect-ratio:1; border-radius:50%;
+    border:4px solid var(--card); background:var(--accent); color:#fff; font-weight:700; font-size:clamp(.8rem,3vw,1.1rem); cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,.35); }
+  .spin:disabled { opacity:.6; cursor:not-allowed; }
+  .result { text-align:center; margin-top:16px; min-height:96px; }
+  .result .flag { font-size:3rem; line-height:1; }
+  .result .name { font-size:1.6rem; font-weight:700; margin:4px 0 10px; }
+  .result .hint { color:var(--muted); }
+  button.btn { font:inherit; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:8px 14px; cursor:pointer; }
+  button.btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+  button.btn:hover { filter:brightness(.95); }
+  .row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  label.auto { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:12px; color:var(--muted); font-size:.95rem; }
+  h2 { font-size:1.05rem; margin:0 0 8px; display:flex; justify-content:space-between; align-items:center; }
+  h2 small { color:var(--muted); font-weight:400; }
+  ul { list-style:none; margin:0; padding:0; }
+  .list { max-height:380px; overflow:auto; }
+  .list li { display:flex; align-items:center; gap:8px; padding:6px 4px; border-bottom:1px solid var(--line); }
+  .list li .n { flex:1; }
+  .list li.off .n { text-decoration:line-through; color:var(--muted); }
+  .list button { border:none; background:none; cursor:pointer; font-size:1.1rem; color:var(--muted); padding:2px 6px; border-radius:6px; }
+  .list button:hover { background:var(--line); color:var(--ink); }
+  .hist li { padding:4px 0; color:var(--muted); }
+  .hist li b { color:var(--ink); font-weight:600; }
+  .stack { display:grid; gap:16px; }
+  form.add { display:flex; gap:6px; margin-top:10px; }
+  form.add input { flex:1; min-width:0; font:inherit; padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:var(--bg); color:var(--ink); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎡 Küchen-Glücksrad</h1>
+  <p>Einmal im Monat die Weltküche auswählen – drehen und kochen!</p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="wheel-wrap">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="1040" height="1040"></canvas>
+      <button class="spin" id="spin">DREHEN</button>
+    </div>
+    <div class="result" id="result"><div class="hint">Drück auf „Drehen“, um die nächste Küche zu bestimmen.</div></div>
+    <label class="auto"><input type="checkbox" id="auto"> Gewählte Küche automatisch entfernen</label>
+  </section>
+
+  <aside class="stack">
+    <div class="card">
+      <h2>Küchen im Rad <small id="count"></small></h2>
+      <ul class="list" id="list"></ul>
+      <form class="add" id="addForm">
+        <input id="addInput" placeholder="Eigene Küche hinzufügen…" maxlength="30">
+        <button class="btn" type="submit">+</button>
+      </form>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="reset">Alle zurücksetzen</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Bereits gekocht</h2>
+      <ul class="hist" id="hist"></ul>
+    </div>
+  </aside>
+</main>
+
+<script>
+const DEFAULTS = [
+  ["🇮🇹","Italienisch"],["🇫🇷","Französisch"],["🇪🇸","Spanisch"],["🇬🇷","Griechisch"],["🇹🇷","Türkisch"],
+  ["🇩🇪","Deutsch"],["🇦🇹","Österreichisch"],["🇭🇺","Ungarisch"],["🇵🇱","Polnisch"],["🇷🇺","Russisch"],
+  ["🇬🇪","Georgisch"],["🇵🇹","Portugiesisch"],["🇸🇪","Schwedisch"],["🇬🇧","Britisch"],["🇮🇱","Israelisch"],
+  ["🇱🇧","Libanesisch"],["🇮🇷","Persisch"],["🇲🇦","Marokkanisch"],["🇪🇹","Äthiopisch"],["🇳🇬","Nigerianisch"],
+  ["🇿🇦","Südafrikanisch"],["🇮🇳","Indisch"],["🇵🇰","Pakistanisch"],["🇱🇰","Sri-Lankisch"],["🇳🇵","Nepalesisch"],
+  ["🇨🇳","Chinesisch"],["🇯🇵","Japanisch"],["🇰🇷","Koreanisch"],["🇹🇭","Thailändisch"],["🇻🇳","Vietnamesisch"],
+  ["🇮🇩","Indonesisch"],["🇲🇾","Malaysisch"],["🇵🇭","Philippinisch"],["🇲🇽","Mexikanisch"],["🇵🇪","Peruanisch"],
+  ["🇧🇷","Brasilianisch"],["🇦🇷","Argentinisch"],["🇨🇴","Kolumbianisch"],["🇨🇺","Kubanisch"],["🇯🇲","Jamaikanisch"],
+  ["🇺🇸","US-Amerikanisch (Südstaaten/BBQ)"],["🇦🇺","Australisch"],["🇲🇳","Mongolisch"],["🇺🇿","Usbekisch"]
+];
+const KEY = "kuechenrad.v1";
+let state = load();
+let rot = 0, spinning = false, current = null;
+
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.items) return s; } catch (e) {}
+  return { items: DEFAULTS.map(([f,n]) => ({f,n,on:true})), hist: [], auto: false };
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+const $ = id => document.getElementById(id);
+const cv = $("wheel"), ctx = cv.getContext("2d");
+const active = () => state.items.filter(i => i.on);
+
+function drawWheel() {
+  const items = active(), n = items.length, S = cv.width, c = S/2, r = c - 10;
+  ctx.clearRect(0,0,S,S);
+  if (!n) {
+    ctx.fillStyle = "#999"; ctx.beginPath(); ctx.arc(c,c,r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.font = "bold 40px system-ui"; ctx.textAlign = "center";
+    ctx.fillText("Alle Küchen gekocht! 🎉", c, c - 80);
+    return;
+  }
+  const arc = Math.PI*2/n;
+  items.forEach((it, i) => {
+    const a0 = rot + i*arc;
+    ctx.beginPath(); ctx.moveTo(c,c); ctx.arc(c,c,r,a0,a0+arc); ctx.closePath();
+    ctx.fillStyle = `hsl(${(i*360/n*1.0 + (i%2)*20) % 360} 70% ${i%2 ? 48 : 56}%)`;
+    ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.stroke();
+    ctx.save(); ctx.translate(c,c); ctx.rotate(a0 + arc/2);
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    ctx.fillStyle = "#fff"; ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 4;
+    if (n <= 14) {
+      ctx.font = "bold 34px system-ui";
+      let t = it.n; while (ctx.measureText(t).width > r*0.62 && t.length > 4) t = t.slice(0,-2);
+      if (t !== it.n) t += "…";
+      ctx.fillText(t + " " + it.f, r - 28, 0);
+    } else {
+      ctx.font = Math.min(52, Math.max(26, arc*r*0.7)) + "px system-ui";
+      ctx.fillText(it.f, r - 24, 0);
+    }
+    ctx.restore();
+  });
+  ctx.beginPath(); ctx.arc(c,c,r,0,Math.PI*2); ctx.lineWidth = 8; ctx.strokeStyle = "rgba(0,0,0,.25)"; ctx.stroke();
+}
+
+function spin() {
+  const items = active();
+  if (spinning || !items.length) return;
+  spinning = true; $("spin").disabled = true; current = null;
+  const n = items.length, arc = Math.PI*2/n, TAU = Math.PI*2;
+  const k = Math.floor(Math.random()*n);
+  const within = 0.15 + Math.random()*0.7;                 // landing spot inside the segment
+  const target = ((3*Math.PI/2 - (k + within)*arc) % TAU + TAU) % TAU; // pointer sits at the top
+  const delta = (((target - rot) % TAU) + TAU) % TAU + TAU*(5 + Math.floor(Math.random()*3));
+  const start = rot, dur = 5000, t0 = performance.now();
+  (function frame(now) {
+    const t = Math.min(1, (now - t0)/dur), e = 1 - Math.pow(1 - t, 4);
+    rot = start + delta*e; drawWheel();
+    if (t < 1) return requestAnimationFrame(frame);
+    rot = rot % TAU; spinning = false; $("spin").disabled = false;
+    finish(items[k]);
+  })(t0);
+}
+
+function finish(it) {
+  current = it;
+  const month = new Date().toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+  state.hist.unshift({ f: it.f, n: it.n, d: month });
+  if (state.auto) it.on = false;
+  save(); render();
+  showResult(it, state.auto);
+}
+
+function showResult(it, removed) {
+  $("result").innerHTML = `<div class="flag">${it.f}</div><div class="name">${esc(it.n)}</div>` +
+    (removed ? `<div class="hint">Aus dem Rad entfernt – guten Appetit! 🍽️</div>`
+             : `<div class="row"><button class="btn primary" id="rm">Entfernen (gekocht)</button><button class="btn" id="again">Nochmal drehen</button></div>`);
+  if (!removed) {
+    $("rm").onclick = () => { it.on = false; save(); render(); $("result").innerHTML = `<div class="hint">${it.f} ${esc(it.n)} entfernt. Guten Appetit! 🍽️</div>`; };
+    $("again").onclick = spin;
+  }
+}
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function render() {
+  $("list").innerHTML = state.items.map((it, i) =>
+    `<li class="${it.on ? "" : "off"}"><span>${it.f}</span><span class="n">${esc(it.n)}</span>` +
+    `<button data-t="${i}" title="${it.on ? "Entfernen" : "Wieder hinzufügen"}">${it.on ? "✕" : "↺"}</button></li>`).join("");
+  $("count").textContent = active().length + " / " + state.items.length;
+  $("hist").innerHTML = state.hist.length
+    ? state.hist.map(h => `<li>${h.f} <b>${esc(h.n)}</b> – ${h.d}</li>`).join("")
+    : `<li>Noch nichts gekocht.</li>`;
+  $("auto").checked = state.auto;
+  $("spin").disabled = spinning || !active().length;
+  drawWheel();
+}
+
+$("spin").onclick = spin;
+$("auto").onchange = e => { state.auto = e.target.checked; save(); };
+$("list").onclick = e => {
+  const b = e.target.closest("button"); if (!b || spinning) return;
+  const it = state.items[+b.dataset.t]; it.on = !it.on; save(); render();
+};
+$("addForm").onsubmit = e => {
+  e.preventDefault();
+  const v = $("addInput").value.trim(); if (!v) return;
+  state.items.push({ f: "🍴", n: v, on: true }); $("addInput").value = ""; save(); render();
+};
+$("reset").onclick = () => {
+  if (spinning || !confirm("Alle Küchen wieder ins Rad legen und den Verlauf löschen?")) return;
+  state.items.forEach(i => i.on = true); state.hist = []; save(); render();
+  $("result").innerHTML = `<div class="hint">Drück auf „Drehen“, um die nächste Küche zu bestimmen.</div>`;
+};
+render();
+</script>
+</body>
+</html>
